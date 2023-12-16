@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Web\MainCategoryController;
+use App\Http\Controllers\Web\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +17,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::group([
+    // 'middleware' => ['auth',"App\Http\Middleware\CheckUserType:admin,user"],
+    // 'middleware' => ['auth:admin'],
+    // 'middleware' => ['auth','auth.type:user,admin,super-admin'],
+    'prefix'=>'/categories',
+    'as'=>'web.'
+    ],function(){
+Route::resource('/main', MainCategoryController::class); 
+Route::resource('/sub', SubCategoryController::class); 
+
 });
