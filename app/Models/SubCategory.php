@@ -12,7 +12,7 @@ class SubCategory extends Model
         'name_ar','name_en','image_url','main_category_id',
     ];
       
-    public function MainCategory(){
+    public function mainCategory(){
         return $this->belongsTo(MainCategory::class);
     }
 }

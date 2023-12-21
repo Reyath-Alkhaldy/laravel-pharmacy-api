@@ -1,57 +1,50 @@
-@extends('layout')
+@extends('index')
 
-@section('title', $mainCategory->name_en)
-
+@section('title', $subCategory->name_en)
 @section('content')
-    <div class="py-3 py-md-4 checkout">
-        <div class="container">
-            <div class="d-flex flex-row justify-content-evenly">
 
-                <a class="btn btn-primary fs-5" href="{{ route('web.main.create') }}"> إنشاء صنف جديد</a>
-
-                <a class="btn btn-primary fs-5" href="{{ route('web.sub.create') }}"> إنشاء صنف فرعي جديد</a>
-            </div>
-            <div class="d-flex flex-row justify-content-between px-4">
-                <h4 class="fs-4">أسم الصنف : {{ $mainCategory->name_ar }} </h4>
-                <h4 class="fs-4">name of Category : {{ $mainCategory->name_en }} </h4>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="shadow bg-white p-3">
-                        <form action="" method="POST">
-                            <div class="row border border-2 m-2 p-1">
-                                <ul
-                                    class="list-group list-group-horizontal d-flex fs-5 fw-bold flex-row justify-content-evenly">
-                                    <li class="list-group-item border-0">أسم الصنف بالعربي</li>
-                                    <li class="list-group-item border-0">أسم الصنف بالإنجليزي </li>
-                                </ul>
-                                @forelse ($mainCategory->subCategories as $category)
-                                    <div class="table-group-divider"></div>
-                                    <ul
-                                        class="list-group list-group-horizontal d-flex fs-5 flex-row justify-content-evenly">
-                                        <li class="list-group-item border-0"><a class="text-decoration-none"
-                                                href="{{ route('web.main.show', ['main' => $category->id]) }}">{{ $category->name_ar }}</a>
-                                        </li>
-                                        <li class="list-group-item border-0"><a class="text-decoration-none"
-                                                href="{{ route('web.main.show', ['main' => $category->id]) }}">{{ $category->name_en }}</a>
-                                        </li>
-                                    </ul>
-                                    <div class="table-group-divider"></div>
-
-                                @empty
-                            </div>
-                            <tr>
-                                <td colspan="9">no category defined</td>
-                            </tr>
-                            @endforelse
-
-
-                        </form>
-
-                    </div>
-                </div>
-
-            </div>
+    {{-- <nav class="navbar bg-body-tertiary ">
+        <div class="container-fluid  justify-content-around  ">
+            <a class="navbar-brand fw-medium fs-3 mb-1 mb-md-0">عرض {{$subCategory->name_ar}} </a>
+            <a class="navbar-brand fw-medium fs-3 mb-1 mb-md-0">{{$subCategory->name_en}} </a>
         </div>
-    </div>
+    </nav> --}}
+
+    <table style="width: 99%" class="text-center mx-auto table mt-5 table-striped table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">الأسم</th>
+                <th scope="col">The name</th>
+                <th scope="col">تابع للصنف الرئيسي</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if ($subCategory)
+                <tr>
+                    <th scope="row"> {{ $subCategory->id }} </th>
+                    <td>{{ $subCategory->name_ar }} </td>
+                    <td>{{ $subCategory->name_en }} </td>
+                    <td dir="ltr">{{ $subCategory->mainCategory->name_en . '   ' . $subCategory->mainCategory->name_ar }} </td>
+                    <td>
+                        <a data-bs-toggle="tooltip" data-bs-title="تعديل الصنف" data-bs-placement="top"
+                            class="btn btn-primary btn-sm" href="{{ route('web.sub.edit', $subCategory->id) }}">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button data-bs-toggle="tooltip" data-bs-title="حذف الصنف" data-bs-placement="top"
+                            class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            @else
+                <tr>
+                    <td colspan="4">no category defined</td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
+
 @endsection

@@ -31,8 +31,8 @@ class MainCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name_en' => "required|string|max:255",
-            'name_ar' => "required|string|max:255",
+            'name_en' => "required|string|min:2|max:255",
+            'name_ar' => "required|string|min:3|max:255",
         ]);
        $mainCategory= MainCategory::create($request->all());
         return redirect()->back()->with([
@@ -54,7 +54,9 @@ class MainCategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $mainCategory = MainCategory::with('subCategories')->find($id);
+        // dd($mainCategory);
+        return view('web.main.edit-category', compact('mainCategory'));
     }
 
     /**
@@ -62,7 +64,17 @@ class MainCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name_en' => "required|string|max:255",
+            'name_ar' => "required|string|max:255",
+        ]);
+       $mainCategory= MainCategory::findOrFail($id);
+        // dd($mainCategory);
+       
+       $mainCategory->update($request->all());
+        return redirect('categories/main')->with([
+            'message' => "updated success {$mainCategory->name_en}      |       {$mainCategory->name_ar}"
+        ]);  
     }
 
     /**

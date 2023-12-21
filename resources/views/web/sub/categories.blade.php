@@ -1,47 +1,42 @@
-@extends('layout')
-@section('content')
-    <div class="py-3 py-md-4 checkout">
-        <div class="container">
-            <div class="d-flex flex-row justify-content-between">
-                <h4 class="fs-4"   >عرض جميع الأصناف الرئيسية</h4>
-            <div class="d-flex flex-row justify-content-evenly">
+@extends('web.sub.nav')
+@section('section')
+    <table style="width: 99%" class="text-center mx-auto table mt-5 table-striped table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">الأسم</th>
+                <th scope="col">The name</th>
+                <th scope="col">تابع للصنف الرئيسي</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse ($mainCategories as $item)
+                <tr>
+                    <th scope="row"> {{ $item->id }} </th>
+                    <td>{{ $item->name_ar }} </td>
+                    <td>{{ $item->name_en }} </td>
+                    <td dir="ltr">{{ $item->mainCategory->name_en . '   ' . $item->mainCategory->name_ar }} </td>
 
-                <a class="btn btn-primary fs-5" href="{{ route('web.main.create') }}"> إنشاء صنف جديد</a>
-                
-                <a class="btn btn-primary fs-5" href="{{ route('web.sub.create') }}"> إنشاء صنف فرعي جديد</a>
-            </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="shadow bg-white p-3">
-                        <form action="" method="POST">
-                            <div class="row border border-2 m-2 p-1"> 
-                                <ul class="list-group list-group-horizontal d-flex fs-5 fw-bold flex-row justify-content-evenly">
-                                    <li class="list-group-item border-0">أسم الصنف بالعربي</li>
-                                    <li class="list-group-item border-0" >أسم الصنف بالإنجليزي </li>
-                                </ul>
-                            @forelse ($mainCategories as $category)
-                            <div class="table-group-divider"></div>
-                                <ul class="list-group list-group-horizontal d-flex fs-5 flex-row justify-content-evenly">
-                                    <li class="list-group-item border-0" ><a class="text-decoration-none" href="{{ route('web.main.show', ['main'=>$category->id]) }}">{{$category->name_ar}}</a></li>
-                                    <li class="list-group-item border-0" ><a class="text-decoration-none" href="{{ route('web.main.show', ['main'=>$category->id]) }}">{{$category->name_en}}</a> </li>
-                                </ul>
-                                <div class="table-group-divider"></div>
-                                
-                                @empty
-                            </div>
-                                <tr>
-                                    <td colspan="9">no category defined</td>
-                                </tr>
-                                 @endforelse
+                    <td>
+                        <a data-bs-toggle="tooltip" data-bs-title="عرض الصنف" data-bs-placement="top"
+                            class="btn btn-primary btn-sm" href="{{ route('web.sub.show', $item->id) }}"><i
+                                class="bi bi-eye"></i></a>
 
-
-                        </form>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-@endsection
+                        <a data-bs-toggle="tooltip" data-bs-title="Edit user" data-bs-placement="top"
+                            class="btn btn-primary btn-sm" href="{{ route('web.sub.edit', $item->id) }}">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <button data-bs-toggle="tooltip" data-bs-title="Delete user" data-bs-placement="top"
+                            class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4">no category defined</td>
+                </tr>
+            @endforelse
+        </tbody>
+    @endsection

@@ -1,48 +1,35 @@
- @extends('layout')
- @section('content')
-     <div class="py-3 py-md-4 checkout">
-         <div class="container">
-             <div class="d-flex flex-row justify-content-between">
-                 <h4>إنشاء صنف رئيسي جديد</h4>
-                 <a class="btn btn-primary fs-5" href="{{ route('web.main.index') }}"> عرض جميع الأصناف</a>
-             </div>
-             <x-alert />
+ @extends('web.main.nav')
+ @section('section')
+ <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid justify-content-center justify-content-md-between">
+        <a class="navbar-brand fw-medium fs-3 mb-1 mb-md-0"> أضافة صنف جديد</a>
+    </div>
+</nav>
+<x-alert />
 
-             <div class="row">
+<form class="mx-0 d-inline row gx-3 gy-4 mt-3" action="{{ route('web.main.store') }}" method="POST">
+    @csrf
+    <div class="col-md-6">
+        <label for="inputfirstName4" class="form-label">أسم الصنف بالعربي :</label>
+        <x-form.input name="name_ar" placeholder="أسم الصنف ..."  type="text"   id="inputfirstName4"/>
+    </div>
+    <div dir="ltr" class="col-md-6 ">
+        <label for="inputlastName3" class="form-label">Category name :</label>
+        <x-form.input name="name_en" placeholder="category name..."   type="text"   id="inputfirstName3"/>
+    </div>
+    {{-- <div>
+        <div class="col-md-6">
+            <label for="inputCountry" class="form-label">Country:</label>
+            <select id="inputCountry" class="form-select">
+                <option selected hidden disabled>Choose here ...</option>
 
-
-                 <div class="col-md-12">
-                     <div class="shadow bg-white p-3">
-
-
-                         <form action="{{ route('web.main.store') }}" method="POST">
-                             @csrf
-                             
-                             <div class="row">
-                                 <div class="col-md-6 mb-3">
-                                     <label>الأسم العربي</label>
-                                     <input type="text" name="name_ar" class="form-control"
-                                         placeholder="أدخل أسم الصنف باللغة العربية" />
-                                 </div>
-                                 <div class="col-md-6 mb-3">
-                                     <label>الأسم الأنجليزي</label>
-                                     <input lang="en" type="text" name="name_en" class="form-control"
-                                         placeholder="أدخل أسم الصنف باللغة الإنجليزية"" />
-                                 </div>
-
-
-                             </div>
-                             <div class=" w-100  text-center ">
-                                 <button type="submit"
-                                     class="btn btn-primary w-75 align-self-center">{{ 'Save' }}</button>
-                             </div>
-
-                         </form>
-
-                     </div>
-                 </div>
-
-             </div>
-         </div>
-     </div>
+                <option>Morocco</option>
+                <option>Egypt</option>
+            </select>
+        </div>
+    </div> --}}
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">حفظ</button>
+    </div>
+</form>
  @endsection

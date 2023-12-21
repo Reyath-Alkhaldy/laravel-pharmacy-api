@@ -14,8 +14,11 @@ class SubCategoryController extends Controller
      */
     public function index()
     {
-        $subCategories = SubCategory::all();
-        return view('web.sub.categories', compact('subCategories'));
+        $mainCategories = SubCategory::all();
+        // dd($mainCategories);
+
+        return view('web.sub.categories', compact('mainCategories'));
+
     }
 
     /**
@@ -36,7 +39,7 @@ class SubCategoryController extends Controller
         $request->validate([
             'name_en' => "required|string|max:255",
             'name_ar' => "required|string|max:255",
-            'main_category_id' => "required|int"
+            'main_category_id' => "required|integer|exists:main_categories,id"
         ]);
        $subCategory= SubCategory::create($request->all());
         return redirect()->back()->with([
@@ -49,7 +52,8 @@ class SubCategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $subCategory = SubCategory::with('mainCategory')->find($id);
+        return view('web.sub.show-category', compact('subCategory'));
     }
 
     /**
@@ -57,7 +61,9 @@ class SubCategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $subCategory = SubCategory::with('mainCategory')->find($id);
+        // dd($mainCategory);
+        return view('web.sub.edit-category', compact('subCategory'));
     }
 
     /**
@@ -65,7 +71,15 @@ class SubCategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name_en' => "required|string|max:255",
+            'name_ar' => "required|string|max:255",
+        ]);
+        $subCategory= SubCategory::findOrFail($id);
+        $subCategory->update($request->all());
+        return redirect('categories/sub')->with([
+            'message' => "updated sub category was success {$subCategory->name_en}      |       {$subCategory->name_ar}"
+        ]);
     }
 
     /**

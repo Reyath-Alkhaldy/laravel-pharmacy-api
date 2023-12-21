@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Web\MainCategoryController;
+use App\Http\Controllers\Web\PharmacyController;
 use App\Http\Controllers\Web\SubCategoryController;
 // use Illuminate\Support\Facades\Route;
 
@@ -16,23 +17,35 @@ use App\Http\Controllers\Web\SubCategoryController;
 |
 */
 
-Route::get('/', function () {
-    return view('sidebars.index');
-});
+Route::get('/',[PharmacyController::class,'index'] );
 // Route::get('/if', function () {
 //     return " hello";
 // })->middleware(['guest']);
+
+
+Route::group([ 
+    'as'=>'web.',
+],function(){
+
+    Route::resource('/pharmacies', PharmacyController::class); 
+    
 Route::group([
     // 'middleware' => ['auth',"App\Http\Middleware\CheckUserType:admin,user"],
     // 'middleware' => ['auth:admin'],
     // 'middleware' => ['auth','auth.type:user,admin,super-admin'],
     'prefix'=>'/categories',
-    'as'=>'web.'
     ],function(){
+
+Route::resource('/pharmacy', MainCategoryController::class); 
 Route::resource('/main', MainCategoryController::class); 
 Route::resource('/sub', SubCategoryController::class); 
 
 });
+});
+
+
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');

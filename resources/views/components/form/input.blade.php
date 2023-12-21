@@ -7,5 +7,5 @@
         'is-invalid' => $errors->has($name),
     ]) {{ $attributes }} />
 @error($name)
-    <div class="text-red-600">{{ $message }}</div>
+    <x-input-error :messages="$errors->get($name)" class="mt-2 text-red-600" />
 @enderror
