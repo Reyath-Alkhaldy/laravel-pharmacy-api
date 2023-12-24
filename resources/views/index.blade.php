@@ -133,8 +133,8 @@
             </a>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto my-padding">
-                <li>
-                    <a href="{{ route('web.pharmacies.index')}}" class="nav-link text-white {{ Request::is('pharmacies*') ? 'active' : '' }}  {{ Request::is('/*') ? 'active' : '' }}">
+                <li class="nav-item">
+                    <a href="{{ route('web.pharmacies.index')}}" class="nav-link  {{ Request::is('pharmacies*') ? 'active' : '' }}  {{ Request::is('/*') ? 'active' : '' }}" aria-current="page">
                         <svg class="bi pe-none ms-2 me-2" width="16" height="16">
                             <use xlink:href="#table" />
                         </svg>
@@ -142,8 +142,8 @@
 
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('web.main.index') }}" class="nav-link {{ Request::is('categories/main*') ? 'active' : '' }} " aria-current="page">
+                <li >
+                    <a href="{{ route('web.main.index') }}" class="nav-link text-white {{ Request::is('categories/main*') ? 'active' : '' }} " >
                         <svg class="bi pe-none ms-2 me-2" width="16" height="16">
                             <use xlink:href="#home" />
                         </svg>
@@ -162,23 +162,15 @@
                 </li>
               
                 <li>
-                    <a href="#" class="nav-link text-white">
+                    <a href="{{ route('web.medicines.index') }}" class="nav-link text-white {{ Request::is('medicines*') ? 'active' : '' }}">
                         <svg class="bi pe-none ms-2 me-2" width="16" height="16">
                             <use xlink:href="#grid" />
                         </svg>
-                        <span class="sidebar-text">Products</span>
+                        <span class="sidebar-text">الأدوية</span>
 
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="nav-link text-white">
-                        <svg class="bi pe-none ms-2 me-2" width="16" height="16">
-                            <use xlink:href="#people-circle" />
-                        </svg>
-                        <span class="sidebar-text">Customers</span>
-
-                    </a>
-                </li>
+     
             </ul>
             <hr>
             <div class="dropdown">

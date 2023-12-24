@@ -2,8 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Pharmacy;
+use App\Models\SubCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use Illuminate\Support\Str;
+// use Faker\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Medicine>
  */
@@ -16,8 +19,22 @@ class MedicineFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            //
-        ];
+        
+    $fakr =  \Faker\Factory::create();
+    $fakr->addProvider(new \Bezhanov\Faker\Provider\Medicine($fakr));
+        $name_en = $fakr->name;
+        $name_ar = $fakr->name;
+        // 'name_en', 'name_ar',  'image', 'price','count', 'status', 'description' ,'sub_category_id','pharmacy_id'
+        return [ 
+        'name_en' =>  $name_en,
+        'name_ar' =>  $name_ar,
+        'description' => fake()->sentence(10),
+        'image' => $this->faker->imageUrl(600,600) ,
+        'price' => $this->faker->randomFloat(2,1,500) ,
+        // 'compare_price' => $this->faker->randomFloat(2,500,999) ,
+        'count' => $this->faker->numberBetween(50,200),
+        'sub_category_id' => SubCategory::inRandomOrder()->first()->id ,
+        'pharmacy_id' => Pharmacy::inRandomOrder()->first()->id ,
+    ];
     }
 }

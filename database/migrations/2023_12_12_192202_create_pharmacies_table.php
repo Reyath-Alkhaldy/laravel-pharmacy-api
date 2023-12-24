@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('address');
             $table->string('phone_number')->unique();
-            $table->string('logo_image');
+            $table->string('image');
             $table->enum('status',['active','inactive'])->default('inactive');
             $table->string('number_of_view_days')->nullable();
             $table->string('latitude_column')->nullable();

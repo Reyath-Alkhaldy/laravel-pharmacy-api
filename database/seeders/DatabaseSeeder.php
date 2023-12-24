@@ -3,6 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\MainCategory;
+use App\Models\Medicine;
+use App\Models\Pharmacy;
+use App\Models\SubCategory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,5 +23,9 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        Pharmacy::factory(10)->create();
+        MainCategory::factory(10)->create();
+        SubCategory::factory(20)->create();
+        Medicine::factory(40)->create();
     }
 }

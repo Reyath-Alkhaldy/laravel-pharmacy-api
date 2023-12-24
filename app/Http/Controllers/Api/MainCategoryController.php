@@ -1,18 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Pharmacy;
+use App\Http\Controllers\Controller;
+use App\Models\MainCategory;
 use Illuminate\Http\Request;
 
-class PharmacyController extends Controller
+class MainCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $mainCategoreis = MainCategory::with('subCategories')->get();
+        return $mainCategoreis;
     }
 
     /**
@@ -26,7 +28,7 @@ class PharmacyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pharmacy $pharmacy)
+    public function show(string $id)
     {
         //
     }
@@ -34,7 +36,7 @@ class PharmacyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pharmacy $pharmacy)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -42,7 +44,7 @@ class PharmacyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pharmacy $pharmacy)
+    public function destroy(string $id)
     {
         //
     }

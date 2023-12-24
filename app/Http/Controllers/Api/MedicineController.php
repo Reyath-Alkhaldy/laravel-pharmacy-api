@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Models\Medicine;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MedicineController extends Controller
 {
@@ -11,7 +13,9 @@ class MedicineController extends Controller
      */
     public function index()
     {
-        //
+        // return 'helloo';
+        $medicines = Medicine::latest()->with('subCategory:id,name_ar,name_en')->get();
+        return $medicines;
     }
 
     /**

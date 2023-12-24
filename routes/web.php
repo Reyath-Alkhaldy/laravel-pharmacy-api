@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Web\MainCategoryController;
+use App\Http\Controllers\Web\MedicineController;
 use App\Http\Controllers\Web\PharmacyController;
 use App\Http\Controllers\Web\SubCategoryController;
 // use Illuminate\Support\Facades\Route;
@@ -25,9 +26,11 @@ Route::get('/',[PharmacyController::class,'index'] );
 
 Route::group([ 
     'as'=>'web.',
+    'middleware' =>'auth'
 ],function(){
 
     Route::resource('/pharmacies', PharmacyController::class); 
+    Route::resource('/medicines', MedicineController::class); 
     
 Route::group([
     // 'middleware' => ['auth',"App\Http\Middleware\CheckUserType:admin,user"],
