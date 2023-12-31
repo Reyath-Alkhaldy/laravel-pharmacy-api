@@ -23,12 +23,12 @@ class MainCategoryFactory extends Factory
         $name_en = $fakr->company;
         $name_ar = $fakr->company;
         // 'name_ar', 'name_en', 'image','pharmacy_id'
-        $pharmacy = Pharmacy::inRandomOrder()->first();
+        // $pharmacy = Pharmacy::inRandomOrder()->first();
         return [
             'name_en' =>  $name_en,
             'name_ar' =>  $name_ar,
             'image' => $this->faker->imageUrl(600, 600),
-            'pharmacy_id' => $pharmacy->id,
+            // 'pharmacy_id' => $pharmacy->id,
         ];
     }
 }

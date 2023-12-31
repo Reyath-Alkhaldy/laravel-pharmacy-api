@@ -23,9 +23,10 @@ return new class extends Migration
             $table->string('name_en');
             $table->string('name_ar');
             $table->string('image');
-            $table->decimal('price');
+            $table->unsignedDouble('price');
             $table->integer('count')->default(0);
             $table->string('description')->nullable();
+            $table->enum('status',['active','inactive'])->default('active');
             $table->foreignId('sub_category_id')->nullable()->constrained('sub_categories')->nullOnDelete();
             $table->foreignId('pharmacy_id')->constrained('pharmacies')->cascadeOnDelete();
             $table->timestamps();

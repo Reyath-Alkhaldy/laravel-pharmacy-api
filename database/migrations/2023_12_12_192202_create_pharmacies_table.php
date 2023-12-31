@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('phone_number')->unique();
             $table->string('image');
             $table->enum('status',['active','inactive'])->default('inactive');
-            $table->string('number_of_view_days')->nullable();
+            $table->integer('number_of_view_days')->nullable();
             $table->string('latitude_column')->nullable();
             $table->string('longitude_column')->nullable();
             $table->timestamps();

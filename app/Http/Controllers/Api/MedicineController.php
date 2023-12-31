@@ -11,11 +11,13 @@ class MedicineController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // return 'helloo';
-        $medicines = Medicine::latest()->with('subCategory:id,name_ar,name_en')->get();
-        return $medicines;
+        // $medicines = Medicine::latest()->with('subCategory:id,name_ar,name_en')->get();
+        $medicines = Medicine::filter($request->all())->get();
+        return response()->json([
+            'status' => 'success',
+            'data' => $medicines]);
     }
 
     /**

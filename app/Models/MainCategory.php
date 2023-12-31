@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -10,7 +11,7 @@ class MainCategory extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name_ar', 'name_en', 'image','pharmacy_id'
+        'name_ar', 'name_en', 'image', 
     ];
 
     /**
@@ -46,5 +47,13 @@ class MainCategory extends Model
     public function subCategories()
     {
         return $this->hasMany(SubCategory::class, 'main_category_id', 'id');
+    }
+
+    public function scopeFilter(Builder $builder, $filters)
+    {
+        $options = array_merge([
+        ], $filters);
+
+       
     }
 }

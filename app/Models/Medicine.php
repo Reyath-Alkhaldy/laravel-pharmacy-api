@@ -56,12 +56,43 @@ class Medicine extends Model
     /**
      * Scope a query to only include 
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @param  \Illuminate\Database\Eloquent\Builder $builder
+     * @param   array $filters
      */
-    public function scopeFilter($query)
+    public function scopeFilter(Builder $builder, $filters)
     {
-        return $query->where('');
+        $options = array_merge([
+            'pharmacy_id' => null,
+            'sub_category_id' => null,
+            // 'tag_id' => null,
+            'status' => 'active',
+        ], $filters);
+        $builder->when($options['pharmacy_id'],function($query ,$value){
+            $query->where('pharmacy_id', $value);
+        });
+        $builder->when($options['sub_category_id'], function ($query,$value) {
+            $query->where('sub_category_id', $value );
+        });
+        $builder->when($options['status'], function ($query ,$value) {
+            $query->where('status', $value );
+        });
+
+        // $builder->when($options['tag_id'],function($query,$value) {
+
+            // $query->whereExists(function($query) use ($value){
+        //     $query->select(1)
+        //     ->from('product_tag')
+        //     ->whereRaw('product_id = product.id')
+        //     ->where('tag_id',$value);
+        // });
+
+            // $query->whereRaw('id IN (SELECT product_id FROM product_tag WHERE tag_id = ?)',[$value]);
+            // $query->whereRaw('EXISTS (SELECT 1 FROM product_tag WHERE tag_id = ? AND product_id = product.id)',[$value]);
+
+            // $query->whereHas('tags', function($builder) use ($value){
+            //     $builder->where('tag_id', $value);
+            // });
+        // });
     }
 
 

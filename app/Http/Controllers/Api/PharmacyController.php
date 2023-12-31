@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class PharmacyController extends Controller
 {
@@ -13,8 +14,20 @@ class PharmacyController extends Controller
      */
     public function index()
     {
-        $pharmacies = Pharmacy::all();
-        return $pharmacies;
+        $pharmacies = Pharmacy::get();
+        // $pharmacies = DB::table('main_categories')
+        // // ->join('main_categories','pharmacies.id','main_categories.pharmacy_id')
+        // ->join('sub_categories','main_categories.id','sub_categories.main_category_id')
+        // ->join('medicines','sub_categories.id','medicines.sub_category_id')
+        // ->join('pharmacies','medicines.pharmacy_id','pharmacies.id')
+        // ->selectRaw('main_categories.* ')
+        // ->groupBy('main_categories.id')
+        // ->where('pharmacies.id',1)
+        ->get();
+        // ->dd();
+        return response()->json([
+            'status' => 'success',
+            'data' => $pharmacies]);
     }
 
     /**

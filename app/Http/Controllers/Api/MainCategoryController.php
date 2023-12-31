@@ -11,10 +11,12 @@ class MainCategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $mainCategoreis = MainCategory::with('subCategories')->get();
-        return $mainCategoreis;
+        $mainCategoreis = MainCategory::filter($request->all())->with('subCategories')->get();
+        return response()->json([
+            'status' => 'success',
+            'data' => $mainCategoreis]);
     }
 
     /**
