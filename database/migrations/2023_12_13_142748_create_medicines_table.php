@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('name_ar');
             $table->string('image');
             $table->unsignedDouble('price');
+            $table->unsignedDouble('discount');
             $table->integer('count')->default(0);
             $table->string('description')->nullable();
             $table->enum('status',['active','inactive'])->default('active');
@@ -32,7 +33,18 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
+    // m_id int  NOT NULL AUTO_INCREMENT,
+    // sic_name varchar(100)  NOT NULL,
+    // subcat_id int  NOT NULL,
+    // descrption text  NOT NULL,
+    // mark_name varchar(100)  NOT NULL,
+    // price decimal(6,2)  NOT NULL,
+    // discount decimal(6,2)  NOT NULL,
+    // sub_cat_id int  NOT NULL,
+    // ar_name varchar(100)  NOT NULL,
+    // en_name varchar(100)  NOT NULL,
+    // pharmacy_id int  NOT NULL,
+    // CONSTRAINT medicin_pk PRIMARY KEY (m_id)
     /**
      * Reverse the migrations.
      */

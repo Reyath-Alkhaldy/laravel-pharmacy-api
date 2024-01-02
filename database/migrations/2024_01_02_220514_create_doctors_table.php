@@ -6,24 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    // cid int  NOT NULL,
-    // cname varchar(100)  NOT NULL,
-    // contactPhon varchar(100)  NOT NULL,
-    // email varchar(100)  NOT NULL,
-    // address text  NOT NULL,
-    // password varchar(30)  NOT NULL,
+    // did int  NOT NULL,
+    // dname varchar(100)  NOT NULL,
+    // contactphone int  NOT NULL,
+    // email varchar(40)  NOT NULL,
+    // password varchar(20)  NOT NULL,
     // confirmcode varchar(100)  NOT NULL,
-    // joindate date  NOT NULL,
-    // CONSTRAINT customer_pk PRIMARY KEY (cid)
+    // jondate timestamp  NOT NULL,
+    // logo varchar(30)  NOT NULL,
+    // CONSTRAINT doctor_pk PRIMARY KEY (did)
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('doctors', function (Blueprint $table) {
+            $table->id();
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('image');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -36,6 +38,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('doctors');
     }
 };

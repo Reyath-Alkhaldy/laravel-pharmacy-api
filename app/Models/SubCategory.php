@@ -47,4 +47,8 @@ class SubCategory extends Model
     {
         return $this->belongsTo(MainCategory::class);
     }
+    public function medicines()
+    {
+        return $this->hasMany(Medicine::class);
+    }
 }

@@ -51,6 +51,11 @@ class Medicine extends Model
     {
         $Builder->where('status','active');
     }
+    // public function scopeID(Builder $Builder,$id )
+    // {
+    //     $Builder->where('pharmacy_id',$id );
+    // }
+    
 
 
     /**

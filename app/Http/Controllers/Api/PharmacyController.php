@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\MainCategory;
+use App\Models\Medicine;
 use Illuminate\Support\Facades\DB;
 
 class PharmacyController extends Controller
@@ -12,22 +14,56 @@ class PharmacyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pharmacies = Pharmacy::get();
-        // $pharmacies = DB::table('main_categories')
-        // // ->join('main_categories','pharmacies.id','main_categories.pharmacy_id')
-        // ->join('sub_categories','main_categories.id','sub_categories.main_category_id')
-        // ->join('medicines','sub_categories.id','medicines.sub_category_id')
-        // ->join('pharmacies','medicines.pharmacy_id','pharmacies.id')
-        // ->selectRaw('main_categories.* ')
-        // ->groupBy('main_categories.id')
-        // ->where('pharmacies.id',1)
+        $id = $request->input('id');
+
+        $pharmacies = MainCategory::
+        whereHas('medicines',function($q) use ($id) {
+            $q->where('pharmacy_id',$id);
+        })
+        ->with(['subCategories' => function($q) use ($id){
+         $q->whereHas('medicines', function($q)use ($id){
+            $q->where('pharmacy_id',$id);
+         });   
+        } ])
+
         ->get();
-        // ->dd();
+
+        return view('test.test', compact('pharmacies'));
+
+        // $medicines = Medicine::where('medicines.pharmacy_id',$id)
+        //  ->groupBy('medicines.sub_category_id')
+        // ->select('medicines.sub_category_id')  
+        // ->get();
+        // $ids=[] ;
+        // foreach($medicines as $medicine){
+        //     $ids[] = $medicine->sub_category_id;
+        // }
+        // return $ids;
+       
+
+        $pharmacies = MainCategory::
+        // with(['subCategories' => function ($q)  use ($id) {
+        //         $q->join('medicines', 'sub_categories.id', 'medicines.sub_category_id')
+        //             ->whereHas('medicines', function ($q) use ($id) {
+        //                 $q->where('pharmacy_id', $id);
+        //             });
+        //     }])
+            // ->
+            whereHas('subCategories', function ($q) use ($id) {
+                $q->whereHas('medicines', function ($q) use ($id) {
+                    $q->where('pharmacy_id', $id);
+                });
+            })
+            ->get();
+        return view('test.test', compact('pharmacies'));
+
+
         return response()->json([
             'status' => 'success',
-            'data' => $pharmacies]);
+            'data' => $pharmacies
+        ]);
     }
 
     /**

@@ -24,12 +24,20 @@ return new class extends Migration
             $table->string('name');
             $table->string('password');
             $table->string('address');
+            $table->foreignId('city_id')->constrained('cites');
             $table->string('phone_number')->unique();
             $table->string('image');
             $table->enum('status',['active','inactive'])->default('inactive');
             $table->integer('number_of_view_days')->nullable();
-            $table->string('latitude_column')->nullable();
-            $table->string('longitude_column')->nullable();
+            // id int  NOT NULL AUTO_INCREMENT,
+            // address varchar(255)  NOT NULL,
+            // city_id int  NOT NULL,
+            // logo varchar(200)  NOT NULL,
+            // username int  NOT NULL,
+            // password varchar(20)  NOT NULL,
+            // confirmation_code varchar(10)  NOT NULL,
+            // $table->string('latitude_column')->nullable();
+            // $table->string('longitude_column')->nullable();
             $table->timestamps();
         });
     }

@@ -5,7 +5,7 @@ use App\Http\Controllers\Web\MainCategoryController;
 use App\Http\Controllers\Web\MedicineController;
 use App\Http\Controllers\Web\PharmacyController;
 use App\Http\Controllers\Web\SubCategoryController;
-// use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

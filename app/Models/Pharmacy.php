@@ -53,8 +53,8 @@ class Pharmacy extends Model
       self::observe(PharmacyObserver::class);
    }
 
-   public function mainCategories()
+   public function medicines()
    {
-      return $this->hasMany(MainCategory::class);
+      return $this->hasMany(Medicine::class);
    }
 }

@@ -11,7 +11,7 @@ class MainCategory extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name_ar', 'name_en', 'image', 
+        'name_ar', 'name_en', 'image',
     ];
 
     /**
@@ -46,14 +46,15 @@ class MainCategory extends Model
 
     public function subCategories()
     {
-        return $this->hasMany(SubCategory::class, 'main_category_id', 'id');
+        return $this->hasMany(SubCategory::class);
+    }
+    public function medicines()
+    {
+        return $this->hasManyThrough(Medicine::class, SubCategory::class);
     }
 
     public function scopeFilter(Builder $builder, $filters)
     {
-        $options = array_merge([
-        ], $filters);
-
-       
+        $options = array_merge([], $filters);
     }
 }
