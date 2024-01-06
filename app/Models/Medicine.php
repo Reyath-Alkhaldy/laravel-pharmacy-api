@@ -12,7 +12,7 @@ class Medicine extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name_en', 'name_ar',  'image', 'price', 'count', 'status', 'description', 'sub_category_id', 'pharmacy_id'
+        'name_en', 'name_ar', 'scien_name', 'mark_name', 'image', 'price', 'discount', 'count', 'status', 'description', 'sub_category_id', 'pharmacy_id'
     ];
     protected $hidden = ['created_at', 'updated_at','image'];
 

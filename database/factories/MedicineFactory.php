@@ -28,9 +28,12 @@ class MedicineFactory extends Factory
         return [ 
         'name_en' =>  $name_en,
         'name_ar' =>  $name_ar,
+        'scien_name' =>  $fakr->firstName,
+        'mark_name' =>  $fakr->lastName,
         'description' => fake()->sentence(10),
         'image' => $this->faker->imageUrl(600,600) ,
         'price' => $this->faker->randomFloat(2,1,500) ,
+        'discount' => $this->faker->randomFloat(2,1,100) ,
         // 'compare_price' => $this->faker->randomFloat(2,500,999) ,
         'count' => $this->faker->numberBetween(50,200),
         'sub_category_id' => SubCategory::inRandomOrder()->first()->id ,

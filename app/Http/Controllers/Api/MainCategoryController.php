@@ -13,10 +13,26 @@ class MainCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $mainCategoreis = MainCategory::filter($request->all())->with('subCategories')->get();
+        $id = $request->input('pharmacy_id');
+        if (isset($id)) {
+
+            $categories = MainCategory::whereHas('medicines', function ($q) use ($id) {
+                    $q->where('pharmacy_id', $id);
+                })
+                ->with(['subCategories' => function ($q) use ($id) {
+                    $q->whereHas('medicines', function ($q) use ($id) {
+                        $q->where('pharmacy_id', $id);
+                    });
+                }])
+
+                ->get();
+        } else {
+            $categories = MainCategory::with('subCategories')->get();
+        }
         return response()->json([
             'status' => 'success',
-            'data' => $mainCategoreis]);
+            'mainCategories' => $categories
+        ]);
     }
 
     /**

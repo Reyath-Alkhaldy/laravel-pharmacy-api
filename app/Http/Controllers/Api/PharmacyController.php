@@ -16,49 +16,7 @@ class PharmacyController extends Controller
      */
     public function index(Request $request)
     {
-        $id = $request->input('id');
-
-        $pharmacies = MainCategory::
-        whereHas('medicines',function($q) use ($id) {
-            $q->where('pharmacy_id',$id);
-        })
-        ->with(['subCategories' => function($q) use ($id){
-         $q->whereHas('medicines', function($q)use ($id){
-            $q->where('pharmacy_id',$id);
-         });   
-        } ])
-
-        ->get();
-
-        return view('test.test', compact('pharmacies'));
-
-        // $medicines = Medicine::where('medicines.pharmacy_id',$id)
-        //  ->groupBy('medicines.sub_category_id')
-        // ->select('medicines.sub_category_id')  
-        // ->get();
-        // $ids=[] ;
-        // foreach($medicines as $medicine){
-        //     $ids[] = $medicine->sub_category_id;
-        // }
-        // return $ids;
-       
-
-        $pharmacies = MainCategory::
-        // with(['subCategories' => function ($q)  use ($id) {
-        //         $q->join('medicines', 'sub_categories.id', 'medicines.sub_category_id')
-        //             ->whereHas('medicines', function ($q) use ($id) {
-        //                 $q->where('pharmacy_id', $id);
-        //             });
-        //     }])
-            // ->
-            whereHas('subCategories', function ($q) use ($id) {
-                $q->whereHas('medicines', function ($q) use ($id) {
-                    $q->where('pharmacy_id', $id);
-                });
-            })
-            ->get();
-        return view('test.test', compact('pharmacies'));
-
+        $pharmacies = Pharmacy::all();
 
         return response()->json([
             'status' => 'success',

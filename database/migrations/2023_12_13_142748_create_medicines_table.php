@@ -22,9 +22,11 @@ return new class extends Migration
             $table->id();
             $table->string('name_en');
             $table->string('name_ar');
+            $table->string('scien_name');
+            $table->string('mark_name');
             $table->string('image');
-            $table->unsignedDouble('price');
-            $table->unsignedDouble('discount');
+            $table->float('price')->default(0);
+            $table->float('discount')->default(0);
             $table->integer('count')->default(0);
             $table->string('description')->nullable();
             $table->enum('status',['active','inactive'])->default('active');

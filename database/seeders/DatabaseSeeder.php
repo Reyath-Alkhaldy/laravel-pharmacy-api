@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\City;
 use App\Models\MainCategory;
 use App\Models\Medicine;
 use App\Models\Pharmacy;
@@ -23,6 +24,10 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        // City
+        $this->call([
+            CitySeeder::class,
+        ]);
         Pharmacy::factory(10)->create();
         MainCategory::factory(10)->create();
         SubCategory::factory(20)->create();

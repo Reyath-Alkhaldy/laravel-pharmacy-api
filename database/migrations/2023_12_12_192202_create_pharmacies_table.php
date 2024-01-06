@@ -23,8 +23,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('password');
+            $table->string('username')->unique();
             $table->string('address');
-            $table->foreignId('city_id')->constrained('cites');
+            $table->foreignId('city_id')->nullable()->constrained('cities')->nullOnDelete();
             $table->string('phone_number')->unique();
             $table->string('image');
             $table->enum('status',['active','inactive'])->default('inactive');

@@ -13,11 +13,13 @@ class MedicineController extends Controller
      */
     public function index(Request $request)
     {
-        // $medicines = Medicine::latest()->with('subCategory:id,name_ar,name_en')->get();
+        // $pharmacyId = $request->input('pharmacy_id');
+        // $request->input('pharmacy_id');
         $medicines = Medicine::filter($request->all())->get();
         return response()->json([
             'status' => 'success',
-            'data' => $medicines]);
+            'count' => $medicines->count(),
+            'medicines' => $medicines]);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AccessTokensController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\MainCategoryController;
 use App\Http\Controllers\Api\MedicineController;
 use App\Http\Controllers\Api\PharmacyController;
@@ -16,6 +18,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::apiResource('cart',  CartController::class);
+
+Route::post('auth/access-tokens', [AccessTokensController::class,'store'])
+->middleware('guest:sanctum')
+->name('access-tokens');
+
+Route::delete('auth/access-tokens/{token?}', [AccessTokensController::class,'destroy'])
+->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

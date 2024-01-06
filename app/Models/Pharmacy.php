@@ -12,7 +12,7 @@ class Pharmacy extends Model
    use HasFactory;
 
    protected $fillable = [
-      'name', 'password',  'address', 'number_of_view_days', 'status', 'image', 'phone_number',
+      'name', 'password', 'username', 'address', 'number_of_view_days', 'status', 'image', 'phone_number',
 
    ];
 
