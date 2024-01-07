@@ -25,16 +25,19 @@ class CartModelRepository implements CartRepository{
         return $this->items;
     }
     public function add(Medicine $medicine,$quantity = 1 ){
-        $item = Cart::where('medicine_id',$medicine->id)->first();
+        $item = Cart::where('medicine_id',"=",$medicine->id)->first();
+
         if(!$item){
             $cart = Cart::create([
                 'user_id' => \Auth::id(),
                 'medicine_id' => $medicine->id,
+                'pharmacy_id' => $medicine->pharmacy_id,
                 'quantity' => $quantity,
             ]);
             $this->get()->push($cart);
             return $cart;
         }
+        // dd($item);
         return $item->increment('quantity',$quantity);
 
     }
@@ -45,8 +48,11 @@ class CartModelRepository implements CartRepository{
     public function delete($id){
           Cart::where('medicine_id',$id)
           ->delete();
-
     }
+    public function deleteByPharmacyId($id){
+        Cart::where('pharmacy_id',$id)
+        ->delete();
+  }
     public function empty(){
         Cart::query()->delete();
 
@@ -58,7 +64,7 @@ class CartModelRepository implements CartRepository{
 
         });
 
-    /*  return (float)  Cart::join('medicines','products.id',"=",'carts.medicine_id')
+    /*  return (float)  Cart::join('medicines','medicines.id',"=",'carts.medicine_id')
         ->selectRaw('sum(medicines.price * carts.quantity) as total')
         ->value('total');
      */

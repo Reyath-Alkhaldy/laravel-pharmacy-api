@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\App;
 
 class CartController extends Controller
 {
-    protected $cart;
+    protected $cart ;
     /**
      * Display a listing of the resource.
      */
@@ -23,7 +23,7 @@ class CartController extends Controller
     public function index( )
     {
         return  [
-            'cart'=> $this->cart,
+            'cart'=> $this->cart->get(),
         ];
     }
 
@@ -36,16 +36,19 @@ class CartController extends Controller
     {
         $request->validate([
             // 'medicine_id'=>['required','int','exists:medicines,id'],
-            'medicine_id'=>['required','int'    ],
+            'medicine_id'=>['required','int'],
+            'device_id'=>['required'],
             'quantity' =>['nullable','int','min:1']
         ]);
 
         $medicine = Medicine::findOrfail($request->post('medicine_id'));
 
         $this->cart->add($medicine,$request->post('quantity'));
+
         if($request->acceptsJson()){
             return response()->json([
                 'message' => 'medicine added to cart',
+                // 'cart' => $this->cart
             ],201);
         }
         return [

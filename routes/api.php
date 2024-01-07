@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AccessTokensController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CheckOutController;
 use App\Http\Controllers\Api\MainCategoryController;
 use App\Http\Controllers\Api\MedicineController;
 use App\Http\Controllers\Api\PharmacyController;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::apiResource('orders',  CheckOutController::class);
 Route::apiResource('cart',  CartController::class);
 
 Route::post('auth/access-tokens', [AccessTokensController::class,'store'])

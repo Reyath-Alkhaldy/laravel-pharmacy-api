@@ -16,32 +16,33 @@ class Cart extends Model
     // protected $keyType = 'string';
 
 
-    protected $fillable = ['pharmay_id','user_id','medicine_id','quantity','options',];
+    protected $fillable = ['id','pharmacy_id','user_id','medicine_id','quantity','options','device_id'];
 
     public static function booted()
     {
         static::observe(CartObserver::class);
-        // static::addGlobalScope('cookie_id',function(Builder $builder){
-        //     $builder->where('cookie_id', static::getCookieId());
-        // });
-
+        static::addGlobalScope('device_id',function(Builder $builder){
+            $builder->where('device_id', static::getDeviceId());
+        });
         // static::creating(function(Cart $cart){
         //     $cart->id = Str::uuid();
         // });
 
     }
-    // public static function  getCookieId(){
-    //     $cookie_id = Cookie::get('cart_id');
-    //     if(!$cookie_id){
-    //         $cookie_id = Str::uuid();
-    //         Cookie::queue('cart_id',$cookie_id, 30 * 24 * 60);
-    //     }
-    //     return $cookie_id;
-    // }
+    public static function  getDeviceId(){
+        $device_id = request()->input('device_id');
+        // if(!$device_id){
+        //     $device_id = Str::uuid();
+        //     Cookie::queue('cart_id',$device_id, 30 * 24 * 60);
+        // }
+        return $device_id;
+    }
 
     public function user()
     {
-        return $this->belongsTo(User::class)->withDefault();
+        return $this->belongsTo(User::class)->withDefault([
+            'name' => 'Guest User'
+        ]);
     }
     public function medicine()
     {
