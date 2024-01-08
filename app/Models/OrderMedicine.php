@@ -19,10 +19,10 @@ class OrderMedicine extends Pivot
 
     public function medicine()
     {
-        return $this->belongsTo(Medicine::class)
-            ->withDefault([
-                'medicine_name' => $this->medicine_name,
-            ]);
+        return $this->belongsTo(Medicine::class);
+    //         ->withDefault([
+    //             'medicine_name' => $this->medicine_name,
+    //         ]);
     }
     public function order()
     {

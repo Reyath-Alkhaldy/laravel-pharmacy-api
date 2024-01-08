@@ -23,6 +23,7 @@ class Order extends Model
                     ->using(OrderMedicine::class)
                     ->withPivot(['medicine_name','price','quantity','options']);
      }
+    
     // public function orderMedicines()
     // {
     //     return $this->belongsTo(OrderMedicine::class);

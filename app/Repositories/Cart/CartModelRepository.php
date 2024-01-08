@@ -20,7 +20,7 @@ class CartModelRepository implements CartRepository{
     {
         if(!$this->items->count()){
 
-            $this->items = Cart::with('medicine')->get();
+            $this->items = Cart::with("medicine")->get();
         }
         return $this->items;
     }

@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Medicine;
-use App\Repositories\Cart\CartModelRepository;
 use App\Repositories\Cart\CartRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 
 class CartController extends Controller
 {
