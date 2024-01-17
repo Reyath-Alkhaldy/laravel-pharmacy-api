@@ -15,6 +15,8 @@ class MedicineController extends Controller
     {
         // $pharmacyId = $request->input('pharmacy_id');
         // $request->input('pharmacy_id');
+        // $medicines = Medicine::filter($request->all())->paginate();
+
         $medicines = Medicine::filter($request->all())->get();
         return response()->json([
             'status' => 'success',

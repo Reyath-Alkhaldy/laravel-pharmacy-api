@@ -14,9 +14,10 @@ class Cart extends Model
 
     public $incrementing = false;
     // protected $keyType = 'string';
+    protected $hidden = ['created_at','updated_at','options'];
 
 
-    protected $fillable = ['id','pharmacy_id','user_id','medicine_id','quantity','options','device_id'];
+    protected $fillable = ['id','pharmacy_id','user_id','medicine_id','quantity','options','device_id',];
 
     public static function booted()
     {

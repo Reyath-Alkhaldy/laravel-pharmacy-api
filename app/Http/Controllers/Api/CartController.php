@@ -10,18 +10,21 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    protected $cart ;
+    protected $cart;
     /**
      * Display a listing of the resource.
      */
-    public function __construct(CartRepository $cart){
+    public function __construct(CartRepository $cart)
+    {
         $this->cart = $cart;
     }
 
-    public function index( )
+    public function index()
     {
         return  [
-            'cart'=> $this->cart->get(),
+            "status" => "success",
+            'carts' => $this->cart->get(),
+            'total' => $this->cart->total(),
         ];
     }
 
@@ -34,23 +37,26 @@ class CartController extends Controller
     {
         $request->validate([
             // 'medicine_id'=>['required','int','exists:medicines,id'],
-            'medicine_id'=>['required','int'],
-            'device_id'=>['required'],
-            'quantity' =>['nullable','int','min:1']
+            'medicine_id' => ['required', 'int'],
+            'device_id' => ['required'],
+            'quantity' => ['nullable', 'int', 'min:1']
         ]);
 
         $medicine = Medicine::findOrfail($request->post('medicine_id'));
 
-        $this->cart->add($medicine,$request->post('quantity'));
+        $this->cart->add($medicine, $request->post('quantity'));
 
-        if($request->acceptsJson()){
-            return response()->json([
+        if ($request->acceptsJson()) {
+            return [
                 'message' => 'medicine added to cart',
-                // 'cart' => $this->cart
-            ],201);
+                "status" => "success",
+                'carts' => $this->cart->get(),
+                'total' => $this->cart->total(),
+            ];
         }
         return [
-            'success' => 'medicine added to cart',
+            "message" => "medicine added to cart",
+            'status' => 'test',
         ];
         // return redirect()->route('cart.index')->with('success','medicine added to cart');
     }
@@ -61,12 +67,12 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'quantity' =>['required','int','min:1']
+            'quantity' => ['required', 'int', 'min:1']
         ]);
-        $this->cart->update($id,$request->post('quantity'));
+        $this->cart->update($id, $request->post('quantity'));
     }
 
     /**
@@ -77,7 +83,7 @@ class CartController extends Controller
         $this->cart->delete($id);
         Cart::destroy($id);
         return [
-            'message'=> 'item delete success'
+            'message' => 'item delete success'
         ];
     }
 }

@@ -25,12 +25,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         // City
-        $this->call([
-            CitySeeder::class,
-        ]);
-        Pharmacy::factory(10)->create();
-        MainCategory::factory(10)->create();
-        SubCategory::factory(20)->create();
+        // $this->call([
+        //     CitySeeder::class,
+        // ]);
+        // Pharmacy::factory(10)->create();
+        // MainCategory::factory(10)->create();
+        // SubCategory::factory(20)->create();
         Medicine::factory(40)->create();
     }
 }
