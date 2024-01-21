@@ -16,8 +16,12 @@ class SpecialtyFactory extends Factory
      */
     public function definition(): array
     {
+        $fakr =  \Faker\Factory::create();
+        $fakr->addProvider(new \Bezhanov\Faker\Provider\Space($fakr));
+        $name = $fakr->name;
         return [
-            //
+            'name' => $name,
+            'image' => $this->faker->imageUrl(600, 600),
         ];
     }
 }

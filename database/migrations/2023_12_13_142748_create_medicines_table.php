@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('scien_name');
             $table->string('mark_name');
             $table->string('image');
-            $table->float('price')->default(0);
-            $table->float('discount')->default(0);
+            $table->decimal('price')->default(0);
+            $table->decimal('discount')->default(0);
             $table->integer('count')->default(0);
             $table->string('description')->nullable();
             $table->enum('status',['active','inactive'])->default('active');

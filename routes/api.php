@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AccessTokensController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CheckOutController;
+use App\Http\Controllers\Api\ConsulationController;
 use App\Http\Controllers\Api\MainCategoryController;
 use App\Http\Controllers\Api\MedicineController;
 use App\Http\Controllers\Api\PharmacyController;
@@ -33,10 +34,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-// Route::get('/medicines',function(){
-//     return "hello";
-// }  );
 Route::apiResource('/medicines', MedicineController::class);
 Route::apiResource('/main-categories', MainCategoryController::class);
 Route::apiResource('/pharmacies', PharmacyController::class);
+Route::prefix('spicialties')->group(function () {
+    Route::get('/',[ConsulationController::class,'spicialties']);
+    Route::get('doctors',[ConsulationController::class,'doctors']);
+    Route::get('consultaions',[ConsulationController::class,'consultaions']);
+});

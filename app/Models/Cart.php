@@ -25,6 +25,7 @@ class Cart extends Model
         static::addGlobalScope('device_id',function(Builder $builder){
             $builder->where('device_id', static::getDeviceId());
         });
+
         // static::creating(function(Cart $cart){
         //     $cart->id = Str::uuid();
         // });

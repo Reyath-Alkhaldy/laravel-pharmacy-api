@@ -22,5 +22,6 @@ class Admin extends User implements MustVerifyEmail
         'super_admin',
         'status',
     ];
+    
 
 }

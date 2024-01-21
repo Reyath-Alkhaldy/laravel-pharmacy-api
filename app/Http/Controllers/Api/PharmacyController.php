@@ -16,8 +16,12 @@ class PharmacyController extends Controller
      */
     public function index(Request $request)
     {
-        $pharmacies = Pharmacy::all();
-
+        // $pharmacies = Pharmacy::all();
+        // return response()->json([
+        //     'status' => 'success',
+        //     'data' => $pharmacies
+        // ]);
+        $pharmacies = Pharmacy::paginate(8);
         return response()->json([
             'status' => 'success',
             'data' => $pharmacies

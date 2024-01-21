@@ -56,7 +56,9 @@ class CartController extends Controller
         }
         return [
             "message" => "medicine added to cart",
-            'status' => 'test',
+            "status" => "success",
+            'carts' => $this->cart->get(),
+            'total' => $this->cart->total(),
         ];
         // return redirect()->route('cart.index')->with('success','medicine added to cart');
     }
@@ -83,7 +85,10 @@ class CartController extends Controller
         $this->cart->delete($id);
         Cart::destroy($id);
         return [
-            'message' => 'item delete success'
+            'message' => 'item delete success',
+            "status" => "success",
+            'carts' => $this->cart->get(),
+            'total' => $this->cart->total(),
         ];
     }
 }

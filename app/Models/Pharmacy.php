@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use App\Observers\PharmacyObserver;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 
-class Pharmacy extends Model
+class Pharmacy extends Authenticatable implements MustVerifyEmail
 {
-   use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
    protected $fillable = [
       'name', 'password', 'username', 'address', 'number_of_view_days', 'status', 'image', 'phone_number',
