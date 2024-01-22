@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SpecialtyCollection;
 use App\Models\Consultaion;
 use App\Models\Doctor;
 use App\Models\Specialty;
@@ -15,26 +16,26 @@ class ConsulationController extends Controller
      */
     public function spicialties()
     {
-      $Specialties =  Specialty::All();
+        $specialties =     Specialty::paginate();
         return response()->json([
             'status' => 'success',
-            'data' => $Specialties,
+            'data' => $specialties
         ]);
     }
 
-   
+
     public function doctors(Request $request)
-    { 
-        $doctors =  Doctor::All();
+    {
+        $doctors =  Doctor::filter($request->all())->paginate();
         return response()->json([
             'status' => 'success',
             'data' => $doctors,
         ]);
     }
 
-     public function consultaions()
+    public function consultaions(Request $request)
     {
-        $consultaions =  Consultaion::All();
+        $consultaions =  Consultaion::filter($request->all())->latest()->paginate();
         return response()->json([
             'status' => 'success',
             'data' => $consultaions,
