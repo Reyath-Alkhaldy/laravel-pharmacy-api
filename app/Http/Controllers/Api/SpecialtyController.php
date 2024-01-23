@@ -3,34 +3,38 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Consultaion;
 use App\Models\Doctor;
 use App\Models\Specialty;
 use Illuminate\Http\Request;
-class ConsulationController extends Controller
+
+class SpecialtyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $consultaions =  Consultaion::filter($request->all())->latest()->paginate();
+        $specialties = Specialty::paginate();
         return response()->json([
             'status' => 'success',
-            'data' => $consultaions,
+            'data' => $specialties
         ]);
     }
-    public function doctors(Request $request)
-    {
-        
-    }
-   
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
     }
 
     /**

@@ -11,9 +11,13 @@ class DoctorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request  $request)
     {
-        //
+        $doctors =  Doctor::filter($request->all())->paginate();
+        return response()->json([
+            'status' => 'success',
+            'data' => $doctors,
+        ]);
     }
 
     /**
