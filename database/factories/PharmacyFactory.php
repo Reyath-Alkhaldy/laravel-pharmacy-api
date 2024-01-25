@@ -25,6 +25,7 @@ class PharmacyFactory extends Factory
         $city = City::inRandomOrder()->first();
         return [
             'name' =>  $name_en,
+            'email' => fake()->unique()->safeEmail(),
             'username' =>  $fakr->userName,
             'password' =>   Hash::make('password'),
             'address' => $fakr->address,

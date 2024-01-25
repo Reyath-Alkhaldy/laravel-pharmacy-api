@@ -22,23 +22,17 @@ return new class extends Migration
         Schema::create('pharmacies', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('password');
+            $table->string('email')->unique();
             $table->string('username')->unique();
+            $table->string('phone_number')->unique();
+            $table->string('password');
             $table->string('address');
             $table->foreignId('city_id')->nullable()->constrained('cities')->nullOnDelete();
-            $table->string('phone_number')->unique();
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->enum('status',['active','inactive'])->default('inactive');
             $table->integer('number_of_view_days')->nullable();
-            // id int  NOT NULL AUTO_INCREMENT,
-            // address varchar(255)  NOT NULL,
-            // city_id int  NOT NULL,
-            // logo varchar(200)  NOT NULL,
-            // username int  NOT NULL,
-            // password varchar(20)  NOT NULL,
-            // confirmation_code varchar(10)  NOT NULL,
-            // $table->string('latitude_column')->nullable();
-            // $table->string('longitude_column')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
         });
     }

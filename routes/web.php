@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\MainCategoryController;
 use App\Http\Controllers\Web\MedicineController;
 use App\Http\Controllers\Web\PharmacyController;
 use App\Http\Controllers\Web\SubCategoryController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,15 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+});
+Route::get('/reset-password/{token}', function($token){
+    return $token;
+})
+                ->middleware(['guest:'.config('fortify.guard')])
+                ->name('password.reset');
 
 // Route::get('/',[PharmacyController::class,'index'] );
 // // Route::get('/if', function () {

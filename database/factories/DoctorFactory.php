@@ -24,6 +24,7 @@ class DoctorFactory extends Factory
         return [
             'name' =>  $fakr->name,
             'email' =>   $fakr->email,
+            'phone_number' => fake()->unique()->phoneNumber(),
             'password' =>   Hash::make('password'),
             'image' => $fakr->imageUrl(600, 600),
             'specialty_id' => $specialty->id,

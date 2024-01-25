@@ -14,13 +14,9 @@ class Admin extends User implements MustVerifyEmail
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'username',
-        'phone_number',
-        'super_admin',
-        'status',
+        'name', 'email', 'password', 'username',
+        'phone_number', 'super_admin', 'status', 
+        'image'
     ];
     
 
