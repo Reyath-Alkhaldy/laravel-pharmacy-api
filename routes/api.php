@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AccessTokensController;
+use App\Http\Controllers\Api\Auth\EmailVerificationController;
+use App\Http\Controllers\Api\Auth\ForgotPasswordController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CheckOutController;
 use App\Http\Controllers\Api\ConsulationController;
@@ -25,26 +28,38 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::get('users',function(){
+
+Route::get('users', function () {
     return User::all();
 });
-Route::get('admins',function(){
+Route::get('admins', function () {
     return Admin::all();
 });
 Route::apiResource('orders',  CheckOutController::class);
 Route::apiResource('cart',  CartController::class);
 
-Route::post('auth/access-tokens', [AccessTokensController::class,'store'])
-->middleware('guest:sanctum');
-// ->name('access-tokens');
+Route::post('password/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
+Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
 
-Route::delete('auth/access-tokens/{token?}', [AccessTokensController::class,'destroy'])
-->middleware('auth:sanctum');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('auth/access-tokens', [AccessTokensController::class, 'store'])
+    ->middleware('guest:sanctum')->name('access-tokens');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::delete('auth/access-tokens/{token?}', [AccessTokensController::class, 'destroy']);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::post('email-verification', [EmailVerificationController::class, 'emailVerification']);
+    Route::get('email-verification', [EmailVerificationController::class, 'sendEmailVerification']);
 });
-Route::post('register',[CreateNewUserController::class,'create']);
+
+
+
+
+
+//!  Api Routes
+Route::post('register', [CreateNewUserController::class, 'create']);
 Route::apiResource('/medicines', MedicineController::class);
 Route::apiResource('/main-categories', MainCategoryController::class);
 Route::apiResource('/pharmacies', PharmacyController::class);

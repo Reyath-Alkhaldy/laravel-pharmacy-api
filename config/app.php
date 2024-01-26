@@ -171,6 +171,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\CartServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
+        Ichtrojan\Otp\OtpServiceProvider::class,
         //  BarryvdhDebugbarFacade 
 
     ])->toArray(),
@@ -188,6 +189,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'Otp' => Ichtrojan\Otp\Otp::class,
+
     ])->toArray(),
 
 ];

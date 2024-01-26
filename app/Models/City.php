@@ -12,5 +12,8 @@ class City extends Model
     protected $fillable = [
          'zip_code', 'name',  
     ];
+    protected $hidden = [
+        'created_at', 'updated_at',
+    ];
 
 }

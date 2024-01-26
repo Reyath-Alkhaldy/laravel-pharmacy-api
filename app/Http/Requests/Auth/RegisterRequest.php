@@ -33,10 +33,10 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required', 'string', 'email', 'max:255',
-                Rule::unique(User::class),
-                Rule::unique(Admin::class),
-                Rule::unique(Doctor::class),
-                Rule::unique(Pharmacy::class),
+                Rule::unique(User::class,'email'),
+                Rule::unique(Admin::class,'email'),
+                Rule::unique(Doctor::class,'email'),
+                Rule::unique(Pharmacy::class,'email'),
             ],
             'password' => $this->passwordRules(),
             'phone_number' => [
