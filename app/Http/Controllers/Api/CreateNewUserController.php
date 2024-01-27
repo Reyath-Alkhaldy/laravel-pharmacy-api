@@ -27,14 +27,15 @@ class CreateNewUserController extends Controller
             $user->notify(new EmailVerificationNotificatin());
             $token = $user->createToken($device_name);
             return response()->json([
+                'status' => 'success',
                 "token" => $token->plainTextToken,
                 "user" => $user,
+                "user_type" => $request->input('user_type'),
             ]);
         }
         return response()->json([
+            'status' => 'vaild',
             "message" => "invalid credentials",
         ], 401);
     }
-
-   
 }

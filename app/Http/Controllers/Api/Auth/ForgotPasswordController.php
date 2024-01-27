@@ -28,7 +28,7 @@ class ForgotPasswordController extends Controller
                 //     Rule::unique(Admin::class, 'email'),
             ],
         ]);
-        $user = $this->getUser($request);
+        $user = $this->getUser($request,'email');
         $user->notify(new ResetPasswordNotificatin);
         return response()->json([
             'status' => 'success',

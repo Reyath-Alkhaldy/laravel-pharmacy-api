@@ -30,7 +30,7 @@ class ResetPasswordController extends Controller
             ]);
         }
 
-        $user = $this->getUser($request);
+        $user = $this->getUser($request,'email');
         $user->update([
             'password' => Hash::make($request->password),
         ]);

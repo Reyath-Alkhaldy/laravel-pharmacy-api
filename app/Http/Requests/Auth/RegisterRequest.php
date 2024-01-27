@@ -41,13 +41,14 @@ class RegisterRequest extends FormRequest
             'password' => $this->passwordRules(),
             'phone_number' => [
                 'required', 'string', 'max:15',
-                Rule::unique(User::class),
-                Rule::unique(Admin::class),
-                Rule::unique(Doctor::class),
-                Rule::unique(Pharmacy::class),
+                Rule::unique(User::class,'phone_number'),
+                Rule::unique(Admin::class,'phone_number'),
+                Rule::unique(Doctor::class,'phone_number'),
+                Rule::unique(Pharmacy::class,'phone_number'),
             ],
             "device_name" => "string|max:255",
-            'user_type' => "required|integer",
+            'user_type' => "required|integer|max:5",
+            'address' => "sometimes|string|max:255",
         ];
     }
 }

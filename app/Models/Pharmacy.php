@@ -15,7 +15,7 @@ class Pharmacy extends Authenticatable implements MustVerifyEmail
     use HasApiTokens, HasFactory, Notifiable;
 
    protected $fillable = [
-      'name', 'password', 'username', 'address',
+      'name', 'email', 'password', 'username', 'address',
        'number_of_view_days', 'status', 'image', 'phone_number',
 
    ];

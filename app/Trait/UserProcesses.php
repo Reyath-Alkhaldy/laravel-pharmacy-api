@@ -24,12 +24,7 @@ trait UserProcesses
     }
     private function creating($user, $request)
     {
-        return   $user->create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'phone_number' => $request['phone_number'],
-            'password' => Hash::make($request['password']),
-        ]);
+        return   $user->create($request->validated());
     }
     public function updateUser($request)
     {
