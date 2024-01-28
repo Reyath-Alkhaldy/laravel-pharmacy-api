@@ -190,6 +190,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'Otp' => Ichtrojan\Otp\Otp::class,
+        'Image' => Intervention\Image\Laravel\Facades\Image::class,
 
     ])->toArray(),
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AccessTokensController;
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\Auth\ForgotPasswordController;
+use App\Http\Controllers\Api\Auth\ProfileController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CheckOutController;
@@ -40,8 +41,9 @@ Route::apiResource('cart',  CartController::class);
 
 Route::post('password/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
 Route::post('password/reset', [ResetPasswordController::class, 'resetPassword']);
-
-
+// register
+Route::post('register', [CreateNewUserController::class, 'create']);
+// login
 Route::post('auth/access-tokens', [AccessTokensController::class, 'store'])
     ->middleware('guest:sanctum')->name('access-tokens');
 
@@ -50,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::put('/user',[ProfileController::class,'update']);
     Route::post('email-verification', [EmailVerificationController::class, 'emailVerification']);
     Route::get('email-verification', [EmailVerificationController::class, 'sendEmailVerification']);
 });
@@ -59,7 +62,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 //!  Api Routes
-Route::post('register', [CreateNewUserController::class, 'create']);
 Route::apiResource('/medicines', MedicineController::class);
 Route::apiResource('/main-categories', MainCategoryController::class);
 Route::apiResource('/pharmacies', PharmacyController::class);

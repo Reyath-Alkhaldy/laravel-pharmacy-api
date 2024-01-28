@@ -24,7 +24,7 @@ class CreateNewUserController extends Controller
         $user = $this->ceateUser($request);
         if ($user && Hash::check($request->password, $user->password)) {
             $device_name = $request->post("device_name", $request->userAgent());
-            $user->notify(new EmailVerificationNotificatin());
+            // $user->notify(new EmailVerificationNotificatin());
             $token = $user->createToken($device_name);
             return response()->json([
                 'status' => 'success',

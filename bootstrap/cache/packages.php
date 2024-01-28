@@ -21,6 +21,13 @@
       'Otp' => 'Ichtrojan\\Otp\\Otp',
     ),
   ),
+  'intervention/validation' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Intervention\\Validation\\Laravel\\ValidationServiceProvider',
+    ),
+  ),
   'laravel/breeze' => 
   array (
     'providers' => 
