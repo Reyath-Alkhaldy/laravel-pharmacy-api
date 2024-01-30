@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\User\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Trait\GetUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,11 +15,7 @@ class AccessTokensController extends Controller
     use GetUser;
     public function store(LoginRequest $request)
     {
-        if ($request->input('user_type') == 1) {
-            $user = $this->getUser($request, 'phone_number');
-        } else {
-            $user = $this->getUser($request, 'email');
-        }
+        $user = User::where('phone_number', $request->input('phone_number'))->first();
         if ($user && Hash::check($request->password, $user->password)) {
             $device_name = $request->post("device_name", $request->userAgent());
             $user->tokens()->delete();
@@ -27,13 +24,12 @@ class AccessTokensController extends Controller
                 'status' => 'success',
                 "token" => $token->plainTextToken,
                 "user" => $user,
-                "user_type" => $request->input('user_type'),
             ]);
         }
         return response()->json([
             'status' => 'vaild',
             "message" => "invalid credentials",
-        ], 401);
+        ], 200);
     }
 
 

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Api\User\Auth;
 
+use App\Actions\Fortify\PasswordValidationRules;
 use App\Http\Controllers\Controller;
-use App\Trait\GetUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Otp;
@@ -11,17 +12,20 @@ use Otp;
 
 class ResetPasswordController extends Controller
 {
-    use GetUser;
+    use PasswordValidationRules;
+
     private $otp;
     public function __construct()
     {
         $this->otp = new Otp;
     }
+    
     public function resetPassword(Request $request)
     {
         $request->validate([
             'email' => ['required', 'email', 'max:255'],
-            'user_type' => ['required', 'max:1',],
+            'password' => ['required', 'string', 'max:255',  $this->passwordRules()],
+            'otp' => ['required', 'string'],
         ]);
         $otp = $this->otp->validate($request->email, $request->otp);
         if (!$otp->status) {
@@ -30,13 +34,13 @@ class ResetPasswordController extends Controller
             ]);
         }
 
-        $user = $this->getUser($request,'email');
+        $user = User::where('email', $request->input('email'))->first();
         $user->update([
             'password' => Hash::make($request->password),
         ]);
         // $user->tokens()->delete();
         return response()->json([
-            'status' => 'success',
+            'status' => 'success'
         ]);
 
     }

@@ -1,36 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\User\Auth;
 
-use App\Actions\Fortify\PasswordValidationRules;
 use App\Notifications\EmailVerificationNotificatin;
-use App\Trait\UserProcesses;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
-use Illuminate\Http\Request;
+use App\Models\User;
 
 class CreateNewUserController extends Controller
 {
-    use PasswordValidationRules, UserProcesses;
-
     /**
      * Validate and create a newly registered user.
      *
-     * @param  array<string, string>  $request
+     * @param  RegisterRequest  $request
      */
     public function create(RegisterRequest $request)
     {
-        $user = $this->ceateUser($request);
+        $user =  User::create($request->validated());
         if ($user && Hash::check($request->password, $user->password)) {
             $device_name = $request->post("device_name", $request->userAgent());
-            // $user->notify(new EmailVerificationNotificatin());
+            $user->notify(new EmailVerificationNotificatin());
             $token = $user->createToken($device_name);
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,
-                "user" => $user,
-                "user_type" => $request->input('user_type'),
+                'user' => $user,
             ]);
         }
         return response()->json([

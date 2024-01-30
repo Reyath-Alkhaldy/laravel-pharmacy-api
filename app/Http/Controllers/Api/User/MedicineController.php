@@ -1,28 +1,27 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\User;
 
-use App\Models\Pharmacy;
+use App\Models\Medicine;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\MainCategory;
-use App\Models\Medicine;
-use Illuminate\Support\Facades\DB;
 
-class PharmacyController extends Controller
+class MedicineController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $pharmacies = Pharmacy::
-        select('id','name','email','address','phone_number','city_id','image')->
-        with('city')->paginate(8);
+        // $pharmacyId = $request->input('pharmacy_id');
+        // $request->input('pharmacy_id');
+        // $medicines = Medicine::filter($request->all())->paginate();
+
+        $medicines = Medicine::filter($request->all())->get();
         return response()->json([
             'status' => 'success',
-            'data' => $pharmacies
-        ]);
+            'count' => $medicines->count(),
+            'medicines' => $medicines]);
     }
 
     /**
@@ -36,7 +35,7 @@ class PharmacyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pharmacy $pharmacy)
+    public function show(string $id)
     {
         //
     }
@@ -44,7 +43,7 @@ class PharmacyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Pharmacy $pharmacy)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -52,7 +51,7 @@ class PharmacyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pharmacy $pharmacy)
+    public function destroy(string $id)
     {
         //
     }

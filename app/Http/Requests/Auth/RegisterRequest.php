@@ -47,7 +47,6 @@ class RegisterRequest extends FormRequest
                 Rule::unique(Pharmacy::class,'phone_number'),
             ],
             "device_name" => "string|max:255",
-            'user_type' => "required|integer|max:5",
             'address' => "sometimes|string|max:255",
         ];
     }

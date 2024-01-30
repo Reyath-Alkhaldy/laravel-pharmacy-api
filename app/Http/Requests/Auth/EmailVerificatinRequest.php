@@ -24,7 +24,6 @@ class EmailVerificatinRequest extends FormRequest
         return [
             'email' => "required|email|max:255",
             'otp' => "required|max:6|",
-            'user_type' => "required|max:1|"
         ];
     }
 }

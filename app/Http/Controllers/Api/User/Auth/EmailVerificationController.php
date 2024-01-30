@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Api\User\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\EmailVerificatinRequest;
+use App\Models\User;
 use App\Notifications\EmailVerificationNotificatin;
 // use Ichtrojan\Otp\Otp;
-use App\Trait\UserProcesses;
 use Illuminate\Http\Request;
 use Otp;
 
 class EmailVerificationController extends Controller
 {
-    use UserProcesses;
     private $otp;
     public function __construct()
     {
@@ -25,6 +24,7 @@ class EmailVerificationController extends Controller
             'status' => 'success',
         ], 200);
     }
+    
     public function emailVerification(EmailVerificatinRequest $request)
     {
         $otp = $this->otp->validate($request->email, $request->otp);
@@ -33,7 +33,9 @@ class EmailVerificationController extends Controller
                 'status' => 'vaild',
             ]);
         }
-        $user = $this->updateUser($request);
+        $user = User::where('email', $request->email)->update([
+            'email_verified_at' => now(),
+        ]);;
         return response()->json([
             'status' => 'success',
             'user' => $user,
