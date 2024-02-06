@@ -29,7 +29,7 @@ class CreateNewUserController extends Controller
             ]);
         }
         return response()->json([
-            'status' => 'vaild',
+            'status' => 'valid',
             "message" => "invalid credentials",
         ], 401);
     }

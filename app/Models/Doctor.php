@@ -24,7 +24,7 @@ class Doctor extends  Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name','email','password','phone_number',
-        'image','status','specialty_id'
+        'image','status','specialty_id','cv','hospital'
     ];
 
     /**
@@ -66,7 +66,7 @@ class Doctor extends  Authenticatable implements MustVerifyEmail
     }
     public function consultaions()
     {
-        $this->hasMany(Consultaion::class);
+        $this->hasMany(Consultation::class);
     }
 
     /**

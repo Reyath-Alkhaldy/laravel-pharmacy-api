@@ -6,7 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Admin;
 use App\Models\City;
-use App\Models\Consultaion;
+use App\Models\Consultation;
 use App\Models\Doctor;
 use App\Models\MainCategory;
 use App\Models\Medicine;
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         Specialty::factory(5)->create();
         User::factory(10)->create();
         Doctor::factory(10)->create();
-        Consultaion::factory(100)->create();
+        Consultation::factory(100)->create();
 
 
         // City

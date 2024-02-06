@@ -22,7 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'name','email','password',
-        'phone_number', 'image',
+        'phone_number', 'image','address'
     ];
     /**
      * The accessors to append to the model's array form.
@@ -39,6 +39,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token','image',
         'created_at', 'updated_at',
+        'two_factor_recovery_codes', 'two_factor_secret','email_verified_at',
 
     ];
 
@@ -54,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function consultaions()
     {
-        $this->hasMany(Consultaion::class);
+        $this->hasMany(Consultation::class);
     }
     public function getImageUrlAttribute()
     {

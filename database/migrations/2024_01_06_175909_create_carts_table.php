@@ -20,8 +20,6 @@ return new class extends Migration
             $table->unsignedInteger('quantity')->default(1);
             $table->json('options')->nullable();
             $table->unique(['device_id','medicine_id']);
-            // $table->unique(['cookie_id','product_id']);
-
             $table->timestamps();
         });
     }

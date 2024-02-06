@@ -28,6 +28,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->foreignId('specialty_id')->nullable()->constrained('specialties')->nullOnDelete();
             $table->enum('status',['active','inactive'])->default('active');
+            $table->text('cv')->nullable();
+            $table->text('hospital')->nullable();
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

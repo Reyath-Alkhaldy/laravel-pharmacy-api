@@ -25,18 +25,12 @@ class Cart extends Model
         static::addGlobalScope('device_id',function(Builder $builder){
             $builder->where('device_id', static::getDeviceId());
         });
-
-        // static::creating(function(Cart $cart){
-        //     $cart->id = Str::uuid();
-        // });
-
+        static::addGlobalScope('pharmacy_id',function(Builder $builder){
+            $builder->where('pharmacy_id',request()->input('pharmacy_id'));
+        });
     }
     public static function  getDeviceId(){
         $device_id = request()->input('device_id');
-        // if(!$device_id){
-        //     $device_id = Str::uuid();
-        //     Cookie::queue('cart_id',$device_id, 30 * 24 * 60);
-        // }
         return $device_id;
     }
 

@@ -3,7 +3,7 @@
 use App\Http\Controllers\Api\User\Auth\CreateNewUserController;
 use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\CheckOutController;
-use App\Http\Controllers\Api\User\ConsulationController;
+use App\Http\Controllers\Api\User\ConsultationController;
 use App\Http\Controllers\api\User\DoctorController;
 use App\Http\Controllers\Api\User\MainCategoryController;
 use App\Http\Controllers\Api\User\MedicineController;
@@ -57,7 +57,8 @@ Route::apiResource('/main-categories', MainCategoryController::class);
 Route::apiResource('/pharmacies', PharmacyController::class);
 Route::apiResource('/spicialties', SpecialtyController::class);
 Route::apiResource('/doctors', DoctorController::class);
-Route::apiResource('/consultaions', ConsulationController::class);
+Route::apiResource('/consultaions', ConsultationController::class);
+Route::get('/consultations/doctors',[ConsultationController::class,'doctors']);
 
 // Route::prefix('spicialties')->group(function () {
 //     Route::get('/',[ConsulationController::class,'spicialties']);
