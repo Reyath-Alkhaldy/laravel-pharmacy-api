@@ -19,8 +19,8 @@ class ConsultationController extends Controller
     {
         // $consultaions =  Consultaion::with(['user','doctor'])->filter($request->all())->latest()->paginate();
         $consultaions =  Consultation::filter($request->all())->latest()->paginate();
-        $user = User::where('id', $request->input('user_id'))->get();
-        $doctor = Doctor::with('specialty')->where('id', $request->input('doctor_id'))->get();
+        $user = User::where('id', $request->input('user_id'))->first();
+        $doctor = Doctor::with('specialty')->where('id', $request->input('doctor_id'))->first();
         return response()->json([
             'status' => 'success',
             'user' => $user,
@@ -47,9 +47,9 @@ class ConsultationController extends Controller
         });
         // return $data;
         $dd = collect();
-         foreach ($data as $key => $value) {
-             $dd->push($value);
-        } 
+        foreach ($data as $key => $value) {
+            $dd->push($value);
+        }
         // return $dd;
         $data = collect($doctors);
         $data = $data->merge(['data' => $dd]);
@@ -80,7 +80,11 @@ class ConsultationController extends Controller
             'type' => $request->input('type'),
             'text' => $request->input('text'),
         ]);
-        return $consultaions->load(['user', 'doctor']);
+        $consultaions->load(['user', 'doctor']);
+        return response()->json([
+            'status' => 'success',
+            'consultation' => $consultaions,
+        ]);
     }
 
     /**
