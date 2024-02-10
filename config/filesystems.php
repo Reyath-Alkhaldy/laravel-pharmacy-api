@@ -43,10 +43,10 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
-        'image_user' => [
+        'consultations' => [
             'driver' => 'local',
-            'root' => storage_path('app/image_user'),
-            'url' => env('APP_URL').'/image_user',
+            'root' => public_path('consultations'),
+            'url' => env('APP_URL').'/consultations',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -85,7 +85,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('image_user') => storage_path('app/image_user'),
+        public_path('consultations') => storage_path('app/consultations'),
     ],
 
 ];

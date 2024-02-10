@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Consultation\StoreConsultationRequest;
 use App\Models\Consultation;
 use App\Models\Doctor;
 use App\Models\Specialty;
 use App\Models\User;
+use App\Notifications\CreatedConsultationNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ConsultationController extends Controller
 {
@@ -66,25 +69,37 @@ class ConsultationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreConsultationRequest $request)
     {
-        $request->validate([
-            'user_id' => ['required', 'integer', 'exists:users,id'],
-            'doctor_id' => ['required', 'integer', 'exists:doctors,id'],
-            'type' => ['required', 'in:question,answer'],
-            'text' => ['required', 'string'],
-        ]);
-        $consultaions =  Consultation::create([
-            'user_id' => $request->input('user_id'),
-            'doctor_id' => $request->input('doctor_id'),
-            'type' => $request->input('type'),
-            'text' => $request->input('text'),
-        ]);
+
+        // $path = Storage::disk('consultations')->put('images', $request->file('image'));
+        $validateData = $request->validated();
+        $path = $this->uploadImage($request);
+        if($path){
+            $validateData['image'] = $path;
+        }
+        $consultaions =  Consultation::create($validateData);
         $consultaions->load(['user', 'doctor']);
+        if($consultaions->type === 'answer'){
+          $user =  $consultaions->user;
+          $user->notify(new CreatedConsultationNotification($consultaions));
+        }else{
+            $doctor =  $consultaions->doctor;
+            $doctor->notify(new CreatedConsultationNotification($consultaions));
+        }
         return response()->json([
             'status' => 'success',
             'consultation' => $consultaions,
         ]);
+    }
+
+    protected function uploadImage(StoreConsultationRequest $request)
+    {
+        if (!$request->hasFile('image')) {
+            return;
+        }
+        $file = $request->file('image');
+        return $file->store('images', "consultations");
     }
 
     /**

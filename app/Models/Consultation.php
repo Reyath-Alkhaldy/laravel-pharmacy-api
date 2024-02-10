@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 class Consultation extends Model
 {
     use HasFactory;
-    protected $fillable = ['id','user_id', 'doctor_id', 'text',
-                            'image','type',];
+    protected $fillable = [
+        'id', 'user_id', 'doctor_id', 'text',
+        'image', 'type',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -29,11 +32,11 @@ class Consultation extends Model
 
     public function user()
     {
-       return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
     public function doctor()
     {
-       return $this->belongsTo(Doctor::class);
+        return $this->belongsTo(Doctor::class);
     }
     /**
      * Scope a query to only include filter
@@ -66,34 +69,33 @@ class Consultation extends Model
         $options = array_merge([
             'user_id' => null,
         ], $filters);
-        $builder->when($options['user_id'],function($query ,$value){
-              $query->where('user_id', $value)->latest() ;
+        $builder->when($options['user_id'], function ($query, $value) {
+            $query->where('user_id', $value)->latest();
             //   $query->select('doctor_id') ;
-              $query->select('doctor_id',DB::raw('count(doctor_id) as count')) ;
-              $query->groupBy('doctor_id');
-              $query->with('doctor');
+            $query->select('doctor_id', DB::raw('count(doctor_id) as count'));
+            $query->groupBy('doctor_id');
+            $query->with('doctor');
             //   $query->whereExists(function($builder) use ($query){
 
             //   });            
             //   $query->whereHas('doctor',function($bulder)use ($query){
             //     $bulder->whereIn('id',$query);
             //   });
-            
+
         });
         // $builder->when($options['user_id'], function ($query,$value) {
         //     $query->where('user_id', $value );
         // });
-    
+
     }
 
     public function getImageUrlAttribute()
     {
-        if(!$this->image)
-        return "https://via.placeholder.com/600x600.png/0077ff?text=aut";
-        if(Str::startsWith($this->image, ['https://','http://']))
+        if (!$this->image)
+            return null;
+        if (Str::startsWith($this->image, ['https://', 'http://']))
             return $this->image;
 
-        return   asset('storage/'.$this->image);
+        return   asset('consultations/' . $this->image);
     }
-
 }

@@ -14,6 +14,8 @@ use App\Http\Controllers\Api\User\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\User\Auth\ForgotPasswordController;
 use App\Http\Controllers\Api\User\Auth\ProfileController;
 use App\Http\Controllers\Api\User\Auth\ResetPasswordController;
+use App\Http\Controllers\Api\User\NotificationController;
+use App\Http\Controllers\Api\User\UploadImageController;
 use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -47,11 +49,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('email-verification', [EmailVerificationController::class, 'sendEmailVerification']);
 });
 
-
+// ! Upload Image 
+Route::post('uploadImage',[UploadImageController::class,'uploadImage']);
 
 
 
 //!  Api Routes
+Route::apiResource('/notifications', NotificationController::class);
+Route::get('/unreadNotifications',[ NotificationController::class,'unreadNotifications']);
+Route::get('/readNotifications',[ NotificationController::class,'readNotifications']);
 Route::apiResource('/medicines', MedicineController::class);
 Route::apiResource('/main-categories', MainCategoryController::class);
 Route::apiResource('/pharmacies', PharmacyController::class);

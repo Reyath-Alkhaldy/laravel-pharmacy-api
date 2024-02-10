@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('doctor_id')->nullable()->constrained('doctors')->nullOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->text('text');
+            $table->text('text')->nullable();
             $table->string('image')->nullable();
             $table->enum('type',['question','answer'])->default('question');
             $table->timestamps();
