@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers\Api\User;
 
-use App\Events\OrderCreated;
 use App\Http\Controllers\Controller;
+use App\Models\Medicine;
 use App\Models\Order;
 use App\Models\OrderMedicine;
 use App\Repositories\Cart\CartRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 
 class CheckOutController extends Controller
 {
-    protected $cart ;
+    protected $cart;
     /**
      * __construct.
      */
-    public function __construct(CartRepository $cart){
+    public function __construct(CartRepository $cart)
+    {
         $this->cart = $cart;
     }
 
@@ -27,64 +29,66 @@ class CheckOutController extends Controller
     public function index()
     {
         // $cart = $this->cart->get();
-       return  Order::with('orderMedicines')->get();
-       
+        $orders =  Order::paginate();
+        return response()->json([
+            'status' => 'success',
+            'data' => $orders,
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,CartRepository $cart)
-    {   // $request->validate([
-        //     'addr.billing.first_name'=> ['required','string','max:255'],
-        //     'addr.billing.last_name'=> ['required','string','max:255'],
-        //     'addr.billing.email'=> ['required','string','max:255'],
-        //     'addr.billing.city'=> ['string','max:255'],
-        //     'addr.billing.phone_number'=> ['string','max:255'],
-        // ]);
-        $items = $cart->get()->where('medicine.pharmacy_id',$request->input('pharmacy_id'))
-                      ->groupBy('pharmacy_id')->all();
+    // public function store(Request $request,CartRepository $cart)
+    public function store(Request $request, CartRepository $cart)
+    {
+        $data = $request->validate([
+            'cart.*.medicine_id' => ['required', 'integer', 'max:255'],
+            'cart.*.quantity' => ['required', 'integer', 'max:255'],
+            // 'cart.*.price' => ['required'],
+            'device_id' => ['required', 'string', 'max:255'],
+            'pharmacy_id' => ['required', 'integer', 'max:255'],
+        ]);
         DB::beginTransaction();
-
-        $order = collect();
+        // return $cart->get();
         try {
-            foreach ($items as $pharmacy_id => $cart_items) {
-                $order  = Order::create([
-                    'pharmacy_id' => $pharmacy_id,
-                    'user_id' =>Auth::id(),
-                ]);
-
-                foreach($cart_items as $item){
-                // $orderMedicine =
-                 OrderMedicine::create([
-                        'order_id' =>$order->id,
-                        'medicine_id' =>$item->medicine_id,
-                        'medicine_name' =>$item->medicine->name_en,
-                        'price' =>$item->medicine->price,
-                        'quantity' =>$item->quantity,
-                    ]);
-                    //   $orderMedicine->medicine->decrement('quantity',$orderMedicine->medicine->pivot->quantity);
-                }
-                // return $order->medicines;
-                $order->addresses()->create([
-                    'email' => $order->pharmacy->email,
-                    'phone_number' => $order->pharmacy->phone_number,
-                    'city' => $order->pharmacy->city->name,
-                    'street_address' => $order->pharmacy->address,
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'pharmacy_id' => $data['pharmacy_id'],
+                'payment_method' => 'cod',
+            ]);
+            $total = 0.0; #total
+            foreach ($data['cart'] as $item) {
+                $medicine = Medicine::where('id', $item['medicine_id'])->first();
+                // $medicine = $cart->get()->where('medicine_id', $item['medicine_id']);
+                $medicine->count > $item['quantity'] ? $medicine->count -= $item['quantity'] : $medicine->count = 0;
+                $medicine->save();
+                $total += $medicine->price * $item['quantity']; #total
+                // $order_medicines =
+                OrderMedicine::create([
+                    'order_id' => $order->id,
+                    'medicine_name' => $medicine->name_en,
+                    'medicine_id' => $item['medicine_id'],
+                    'quantity' => $item['quantity'],
+                    'price' => $medicine->price,
                 ]);
             }
-
-                // event('order.created',$order,Auth::user());
-                event(new OrderCreated($order));
-                DB::commit();
-
-        } catch (\Throwable $e) {
-
-            DB::rollback();
-            throw $e;
+            $order->total = $total; #total
+            $order->save(); #total
+            $cart->empty();
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'The order was created',
+            ]);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            // throw $th;
+            return response()->json([
+                'status' => 'valid',
+                'message' =>$th->getMessage() 
+            ]);
         }
-        // return redirect()->route('home');
-
     }
 
     /**
@@ -92,7 +96,12 @@ class CheckOutController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // return  Order::where('id',$id)->with('orderMedicines:id,name_en,name_ar,price,pharmacy_id')->get();
+         $orders =  Order::where('id',$id)->with('medicines')->get();
+        return response()->json([
+            'status' => 'success',
+            'orders' => $orders,
+        ]);
     }
 
     /**

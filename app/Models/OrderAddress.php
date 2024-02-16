@@ -11,7 +11,8 @@ class OrderAddress extends Model
     use HasFactory;
     protected $fillable = [
         'order_id','email','phone_number',
-        'street_address','city','postal_code' ];
+        'street_address','city','postal_code',
+        'type','name' ];
 
         public $timestamps = false;
 

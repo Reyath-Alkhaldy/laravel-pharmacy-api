@@ -27,7 +27,7 @@ class AccessTokensController extends Controller
             ]);
         }
         return response()->json([
-            'status' => 'vaild',
+            'status' => 'valid',
             "message" => "invalid credentials",
         ], 200);
     }

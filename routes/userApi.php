@@ -28,7 +28,7 @@ Route::get('users', function () {
 Route::get('admins', function () {
     return Admin::all();
 });
-Route::apiResource('orders',  CheckOutController::class);
+Route::apiResource('checkout',  CheckOutController::class);
 Route::apiResource('cart',  CartController::class);
 
 Route::post('password/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
@@ -49,23 +49,28 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('email-verification', [EmailVerificationController::class, 'sendEmailVerification']);
 });
 
+
+//!     auth:sanctum 
+Route::middleware('auth:sanctum')->group(function () {
+
 // ! Upload Image 
 Route::post('uploadImage',[UploadImageController::class,'uploadImage']);
-
-
 
 //!  Api Routes
 Route::apiResource('/notifications', NotificationController::class);
 Route::get('/unreadNotifications',[ NotificationController::class,'unreadNotifications']);
 Route::get('/readNotifications',[ NotificationController::class,'readNotifications']);
-Route::apiResource('/medicines', MedicineController::class);
-Route::apiResource('/main-categories', MainCategoryController::class);
-Route::apiResource('/pharmacies', PharmacyController::class);
-Route::apiResource('/spicialties', SpecialtyController::class);
-Route::apiResource('/doctors', DoctorController::class);
 Route::apiResource('/consultaions', ConsultationController::class);
 Route::get('/consultations/doctors',[ConsultationController::class,'doctors']);
 
+});
+
+
+Route::apiResource('/pharmacies', PharmacyController::class);
+Route::apiResource('/main-categories', MainCategoryController::class);
+Route::apiResource('/medicines', MedicineController::class);
+Route::apiResource('/spicialties', SpecialtyController::class);
+Route::apiResource('/doctors', DoctorController::class);
 // Route::prefix('spicialties')->group(function () {
 //     Route::get('/',[ConsulationController::class,'spicialties']);
 //     Route::get('doctors',[ConsulationController::class,'doctors']);

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
             $table->foreignId('medicine_id')->nullable()->constrained('medicines')->nullOnDelete();
             $table->string('medicine_name');
-            $table->float('price');
+            $table->decimal('price');
             $table->unsignedInteger('quantity')->default(1);
             $table->json('options')->nullable();
             $table->unique(['order_id','medicine_id']);

@@ -31,6 +31,6 @@ class CreateNewUserController extends Controller
         return response()->json([
             'status' => 'valid',
             "message" => "invalid credentials",
-        ], 401);
+        ], 200);
     }
 }

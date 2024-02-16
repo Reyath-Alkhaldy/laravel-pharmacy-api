@@ -61,6 +61,7 @@ class ConsultationController extends Controller
 
         return response()->json([
             'status' => 'success',
+            'message' => 'success',
             'consultations' => $data,
         ]);
     }
