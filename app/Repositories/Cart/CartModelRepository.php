@@ -50,8 +50,8 @@ class CartModelRepository implements CartRepository{
         }
         return $this->items;
     }
-    public function add(Medicine $medicine,$quantity = 1 ){
-        $item = Cart::where('medicine_id',"=",$medicine->id)->first();
+    public function add(  $medicine,$quantity = 1 ){
+        $item = Cart::where('medicine_id',$medicine->id)->first();
 
         if(!$item){
             $cart = Cart::create([

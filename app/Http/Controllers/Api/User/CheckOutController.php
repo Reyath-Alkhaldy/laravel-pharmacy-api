@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\User;
 
+use App\Events\OrderCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Medicine;
 use App\Models\Order;
@@ -60,11 +61,9 @@ class CheckOutController extends Controller
             $total = 0.0; #total
             foreach ($data['cart'] as $item) {
                 $medicine = Medicine::where('id', $item['medicine_id'])->first();
-                // $medicine = $cart->get()->where('medicine_id', $item['medicine_id']);
                 $medicine->count > $item['quantity'] ? $medicine->count -= $item['quantity'] : $medicine->count = 0;
                 $medicine->save();
                 $total += $medicine->price * $item['quantity']; #total
-                // $order_medicines =
                 OrderMedicine::create([
                     'order_id' => $order->id,
                     'medicine_name' => $medicine->name_en,
@@ -75,7 +74,9 @@ class CheckOutController extends Controller
             }
             $order->total = $total; #total
             $order->save(); #total
-            $cart->empty();
+            $order->load('pharmacy');
+            // ! event OrderCreated with listeners
+            event(new OrderCreated($order));
             DB::commit();
             return response()->json([
                 'status' => 'success',
@@ -86,7 +87,7 @@ class CheckOutController extends Controller
             // throw $th;
             return response()->json([
                 'status' => 'valid',
-                'message' =>$th->getMessage() 
+                'message' => $th->getMessage()
             ]);
         }
     }
@@ -97,10 +98,10 @@ class CheckOutController extends Controller
     public function show(string $id)
     {
         // return  Order::where('id',$id)->with('orderMedicines:id,name_en,name_ar,price,pharmacy_id')->get();
-         $orders =  Order::where('id',$id)->with('medicines')->get();
+        $orders =  Order::where('id', $id)->with('medicines')->get();
         return response()->json([
             'status' => 'success',
-            'orders' => $orders,
+            'order' => $orders,
         ]);
     }
 

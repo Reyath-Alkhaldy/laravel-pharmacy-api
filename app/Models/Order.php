@@ -23,7 +23,7 @@ class Order extends Model
      public function medicines(){
         return $this->belongsToMany(Medicine::class,'order_medicines','order_id','medicine_id','id','id')
                     ->using(OrderMedicine::class)
-                    ->as('OrderMedicine')
+                    ->as('order_medicine')
                     ->withPivot(['medicine_name','price','quantity','options']);
      }
     

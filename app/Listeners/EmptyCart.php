@@ -20,8 +20,8 @@ class EmptyCart
     /**
      * Handle the event.
      */
-    public function handle(OrderCreated $event): void
+    public function handle($event): void
     {
-        Cart::deleteByPharmacyId($event->order->pharmacy_id);
+        Cart::empty();
     }
 }
