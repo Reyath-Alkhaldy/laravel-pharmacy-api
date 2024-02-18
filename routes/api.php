@@ -13,4 +13,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+require __DIR__.'/doctorApi.php';
 require __DIR__.'/userApi.php';

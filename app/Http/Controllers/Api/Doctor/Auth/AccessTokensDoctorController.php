@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Doctor\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Doctor\Auth\LoginDoctorRequest;
 use App\Models\Doctor;
 use App\Trait\GetUser;
 use Illuminate\Support\Facades\Auth;
@@ -13,12 +13,12 @@ use Laravel\Sanctum\PersonalAccessToken;
 class AccessTokensDoctorController extends Controller
 {
     use GetUser;
-    public function store(LoginRequest $request)
+    public function store(LoginDoctorRequest $request)
     {
-        $doctor = Doctor::where('phone_number', $request->input('phone_number'))->first();
+        $doctor = Doctor::where('email', $request->input('email'))->first();
         if ($doctor && Hash::check($request->password, $doctor->password)) {
             $device_name = $request->post("device_name", $request->userAgent());
-            $doctor->tokens()->delete();
+            // $doctor->tokens()->delete();
             $token = $doctor->createToken($device_name);
             return response()->json([
                 'status' => 'success',

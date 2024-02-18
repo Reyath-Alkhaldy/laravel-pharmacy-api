@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Doctor\Auth;
 
 use App\Actions\Fortify\PasswordValidationRules;
 use Illuminate\Foundation\Http\FormRequest;
@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 use App\Models\Admin;
 use App\Models\Doctor;
 
-class RegisterRequest extends FormRequest
+class RegisterDoctorRequest extends FormRequest
 {
     use PasswordValidationRules;
 
@@ -32,7 +32,7 @@ class RegisterRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
-                'sometimes', 'string', 'email', 'max:255',
+                'required', 'string', 'email', 'max:255',
                 Rule::unique(User::class,'email'),
                 Rule::unique(Admin::class,'email'),
                 Rule::unique(Doctor::class,'email'),
@@ -47,7 +47,8 @@ class RegisterRequest extends FormRequest
                 Rule::unique(Pharmacy::class,'phone_number'),
             ],
             "device_name" => "string|max:255",
-            'address' => "sometimes|string|max:255",
+            // 'address' => "sometimes|string|max:255",
+            'specialty_id' => "sometimes|string|max:255",
         ];
     }
 }

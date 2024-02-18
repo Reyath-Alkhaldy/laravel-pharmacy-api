@@ -18,7 +18,7 @@ class AccessTokensController extends Controller
         $user = User::where('phone_number', $request->input('phone_number'))->first();
         if ($user && Hash::check($request->password, $user->password)) {
             $device_name = $request->post("device_name", $request->userAgent());
-            $user->tokens()->delete();
+            // $user->tokens()->delete();
             $token = $user->createToken($device_name);
             return response()->json([
                 'status' => 'success',

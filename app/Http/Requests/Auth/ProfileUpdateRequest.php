@@ -36,6 +36,8 @@ class ProfileUpdateRequest extends FormRequest
             ],
             'image' => ['image', 'max:4096'],
             'user_type' => "required|integer",
+            'specialty_id' => "sometimes|string|max:255",
+
         ];
     }
 }
