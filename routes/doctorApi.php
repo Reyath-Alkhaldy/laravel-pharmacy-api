@@ -20,6 +20,9 @@ Route::prefix('/doctor')->group(function () {
 
     Route::post('password/forgot-password', [ForgotPasswordDoctorController::class, 'forgotPassword']);
     Route::post('password/reset', [ResetPasswordDoctorController::class, 'resetPassword']);
+   
+    //! specialties
+    Route::get('specialties', [CreateNewDoctorController::class, 'specialties']);
     // register
     Route::post('register', [CreateNewDoctorController::class, 'create']);
     // login

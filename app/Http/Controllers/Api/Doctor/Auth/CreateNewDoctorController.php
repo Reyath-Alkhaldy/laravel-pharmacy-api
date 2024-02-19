@@ -7,6 +7,7 @@ use App\Notifications\EmailVerificationNotificatin;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Models\Doctor;
+use App\Models\Specialty;
 
 class CreateNewDoctorController extends Controller
 {
@@ -22,6 +23,7 @@ class CreateNewDoctorController extends Controller
             $device_name = $request->post("device_name", $request->userAgent());
             $doctor->notify(new EmailVerificationNotificatin());
             $token = $doctor->createToken($device_name);
+            $doctor =Doctor::find($doctor->id);
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,
@@ -32,5 +34,14 @@ class CreateNewDoctorController extends Controller
             'status' => 'valid',
             "message" => "invalid credentials",
         ], 200);
+    }
+
+
+    public function specialties(){
+        $specialties = Specialty::get();
+        return response()->json([
+            'status' => 'success',
+            'specialties' => $specialties,
+        ]);
     }
 }
