@@ -17,7 +17,9 @@ class MedicineController extends Controller
         // $request->input('pharmacy_id');
         // $medicines = Medicine::filter($request->all())->paginate();
 
-        $medicines = Medicine::filter($request->all())->get();
+        $medicines = Medicine::
+        // with('favorite')->
+        filter($request->all())->get();
         return response()->json([
             'status' => 'success',
             'count' => $medicines->count(),

@@ -10,6 +10,7 @@ use App\Models\Specialty;
 use App\Models\User;
 use App\Notifications\CreatedConsultationNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -22,7 +23,7 @@ class ConsultationController extends Controller
     {
         // $consultaions =  Consultaion::with(['user','doctor'])->filter($request->all())->latest()->paginate();
         $consultaions =  Consultation::filter($request->all())->latest()->paginate();
-        $user = User::where('id', $request->input('user_id'))->first();
+        $user = User::where('id', $request->input('doctor_id'))->first();
         $doctor = Doctor::with('specialty')->where('id', $request->input('doctor_id'))->first();
         return response()->json([
             'status' => 'success',
@@ -37,7 +38,7 @@ class ConsultationController extends Controller
         $doctors =  $query
             // ->filt($request->all())
             ->with('doctor')
-            ->where('user_id', $request->input('user_id'))
+            ->where('user_id', Auth::id())
             ->latest()
             ->paginate();
         // return $doctors;

@@ -46,6 +46,10 @@ class Medicine extends Model
     {
         return $this->belongsTo(Pharmacy::class);
     }
+    public function favorite(){
+        return $this->hasOne(Favorite::class);
+
+    }
 
     public function scopeActive(Builder $Builder )
     {

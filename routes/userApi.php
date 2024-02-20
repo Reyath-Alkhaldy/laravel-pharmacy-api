@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\CheckOutController;
 use App\Http\Controllers\Api\User\ConsultationController;
 use App\Http\Controllers\api\User\DoctorController;
+use App\Http\Controllers\Api\User\FavoriteController;
 use App\Http\Controllers\Api\User\MainCategoryController;
 use App\Http\Controllers\Api\User\MedicineController;
 use App\Http\Controllers\Api\User\PharmacyController;
@@ -67,6 +68,7 @@ Route::apiResource('/main-categories', MainCategoryController::class);
 Route::apiResource('/medicines', MedicineController::class);
 Route::apiResource('/spicialties', SpecialtyController::class);
 Route::apiResource('/doctors', DoctorController::class);
+Route::apiResource('/favorites', FavoriteController::class);
 
 
 

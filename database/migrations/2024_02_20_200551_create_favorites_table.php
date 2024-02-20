@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('consultations', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('doctor_id')->nullable()->constrained('doctors')->cascadeOnDelete();
+        Schema::create('favorites', function (Blueprint $table) {
+            // $table->id();
+            $table->uuid('id')->primary();
+            $table->uuid('device_id');
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
-            $table->text('text')->nullable();
-            $table->string('image')->nullable();
-            $table->enum('type',['question','answer'])->default('question');
+            $table->foreignId('medicine_id')->constrained('medicines')->cascadeOnDelete();
+            $table->unique(['device_id','medicine_id','user_id']);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('consultaions');
+        Schema::dropIfExists('favorites');
     }
 };

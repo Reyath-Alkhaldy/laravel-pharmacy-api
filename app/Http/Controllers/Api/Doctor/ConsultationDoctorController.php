@@ -9,6 +9,7 @@ use App\Models\Doctor;
 use App\Models\User;
 use App\Notifications\CreatedConsultationNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConsultationDoctorController extends Controller
 {
@@ -34,7 +35,7 @@ class ConsultationDoctorController extends Controller
         $users =  $query
             // ->filt($request->all())
             ->with('user')
-            ->where('doctor_id', $request->input('doctor_id'))
+            ->where('doctor_id', Auth::id())
             ->latest()
             ->paginate();
         // return $users;
