@@ -16,6 +16,12 @@ class Favorite extends Pivot
     // protected $keyType = 'string';
     protected $hidden = ['updated_at'];
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'favorites';
 
     protected $fillable = ['id', 'user_id', 'medicine_id', 'device_id'];
 

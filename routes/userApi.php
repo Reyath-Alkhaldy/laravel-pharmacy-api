@@ -70,7 +70,7 @@ Route::get('/consultations/doctors',[ConsultationController::class,'doctors']);
 
 Route::apiResource('/pharmacies', PharmacyController::class);
 Route::apiResource('/main-categories', MainCategoryController::class);
-Route::apiResource('/medicines', MedicineController::class)->middleware(['auth:sanctum']);
+Route::apiResource('/medicines', MedicineController::class);//->middleware(['auth:sanctum']);
 Route::apiResource('/spicialties', SpecialtyController::class);
 Route::apiResource('/doctors', DoctorController::class);
 Route::apiResource('/favorites', FavoriteController::class);
