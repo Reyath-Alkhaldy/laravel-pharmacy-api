@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class Medicine extends Model
 {
@@ -46,9 +47,10 @@ class Medicine extends Model
     {
         return $this->belongsTo(Pharmacy::class);
     }
-    public function favorite(){
-        return $this->hasOne(Favorite::class);
-
+    public function favorites(){
+        return $this->belongsToMany(User::class,'favorites','medicine_id','user_id')
+                    ->using(Favorite::class);
+                    // ->as('favorites');
     }
 
     public function scopeActive(Builder $Builder )
@@ -86,6 +88,20 @@ class Medicine extends Model
             $query->where('status', $value );
         });
 
+        $builder->when(Auth::check(), function($query){
+            $query->with(['favorites' => function($q){
+                $q->where('user_id',Auth::user()->id);
+            }]);
+        });
+
+        // $builder->whereHas('favorites');
+        $builder->when(Auth::guest(), function ($query) {
+            $query->with(['favorites' => function ($hasMany) {
+                // will exclude all rows but flag the relation as loaded
+                // and therefore add an empty collection as relation
+                $hasMany->whereRaw('1 = 0');
+            }]);
+        });
         // $builder->when($options['tag_id'],function($query,$value) {
 
             // $query->whereExists(function($query) use ($value){

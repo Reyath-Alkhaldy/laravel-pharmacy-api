@@ -52,7 +52,7 @@ class CartModelRepository implements CartRepository{
     }
     public function add(  $medicine,$quantity = 1 ){
         $item = Cart::where('medicine_id',$medicine->id)->first();
-
+// return $item;
         if(!$item){
             $cart = Cart::create([
                 'user_id' => \Auth::id(),

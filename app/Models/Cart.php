@@ -25,9 +25,7 @@ class Cart extends Model
         static::addGlobalScope('device_id',function(Builder $builder){
             $builder->where('device_id', static::getDeviceId());
         });
-        static::addGlobalScope('pharmacy_id',function(Builder $builder){
-            $builder->where('pharmacy_id',request()->input('pharmacy_id'));
-        });
+       
     }
     public static function  getDeviceId(){
         $device_id = request()->input('device_id');

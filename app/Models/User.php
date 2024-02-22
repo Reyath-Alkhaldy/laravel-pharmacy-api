@@ -21,8 +21,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name','email','password',
-        'phone_number', 'image','address'
+        'name', 'email', 'password',
+        'phone_number', 'image', 'address'
     ];
     /**
      * The accessors to append to the model's array form.
@@ -37,9 +37,9 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $hidden = [
-        'password', 'remember_token','image',
+        'password', 'remember_token', 'image',
         'created_at', 'updated_at',
-        'two_factor_recovery_codes', 'two_factor_secret','email_verified_at',
+        'two_factor_recovery_codes', 'two_factor_secret', 'email_verified_at',
 
     ];
 
@@ -57,13 +57,26 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->hasMany(Consultation::class);
     }
+    public function favorites()
+    {
+        return $this->belongsToMany(Medicine::class,'favorites');
+    }
+    // public function medicines()
+    // {
+    //     return $this->hasManyThrough(medicine::class,Favorite::class);
+    // }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function getImageUrlAttribute()
     {
-        if(!$this->image)
-        return "https://via.placeholder.com/600x600.png/0077ff?text=aut";
-        if(Str::startsWith($this->image, ['https://','http://']))
+        if (!$this->image)
+            return "https://via.placeholder.com/600x600.png/0077ff?text=aut";
+        if (Str::startsWith($this->image, ['https://', 'http://']))
             return $this->image;
 
-        return   asset('storage/'.$this->image);
+        return   asset('storage/' . $this->image);
     }
 }

@@ -25,7 +25,6 @@ Route::get('users', function () {
     return User::all();
 });
 
-Route::apiResource('checkout',  CheckOutController::class);
 Route::apiResource('cart',  CartController::class);
 
 Route::post('password/forgot-password', [ForgotPasswordController::class, 'forgotPassword']);
@@ -37,10 +36,16 @@ Route::post('auth/access-tokens', [AccessTokensController::class, 'store'])
     ->middleware('guest:sanctum')->name('access-tokens');
 
 Route::middleware('auth:sanctum')->group(function () {
+    // ! checkout or orders
+    Route::apiResource('checkout',  CheckOutController::class);
+
     Route::delete('auth/access-tokens/{token?}', [AccessTokensController::class, 'destroy']);
+
     Route::get('/user', function (Request $request) {
         return $request->user();
+        // return $request->user()->medicines;
     });
+
     Route::put('/user', [ProfileController::class, 'update']);
     Route::post('email-verification', [EmailVerificationController::class, 'emailVerification']);
     Route::get('email-verification', [EmailVerificationController::class, 'sendEmailVerification']);
@@ -65,7 +70,7 @@ Route::get('/consultations/doctors',[ConsultationController::class,'doctors']);
 
 Route::apiResource('/pharmacies', PharmacyController::class);
 Route::apiResource('/main-categories', MainCategoryController::class);
-Route::apiResource('/medicines', MedicineController::class);
+Route::apiResource('/medicines', MedicineController::class)->middleware(['auth:sanctum']);
 Route::apiResource('/spicialties', SpecialtyController::class);
 Route::apiResource('/doctors', DoctorController::class);
 Route::apiResource('/favorites', FavoriteController::class);

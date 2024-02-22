@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class MedicineController extends Controller
 {
@@ -13,13 +14,17 @@ class MedicineController extends Controller
      */
     public function index(Request $request)
     {
-        // $pharmacyId = $request->input('pharmacy_id');
-        // $request->input('pharmacy_id');
         // $medicines = Medicine::filter($request->all())->paginate();
 
-        $medicines = Medicine::
-        // with('favorite')->
-        filter($request->all())->get();
+        // $medicines = Medicine::
+        // filter($request->all())->get();
+
+        // return auth()->check();
+        // return Auth::guest() ? 0:1;
+        $medicines = Medicine:: where('count', '>', 0)
+
+        ->filter($request->all())->get();
+        // $medicines->first()->favorites->first()->pivot
         return response()->json([
             'status' => 'success',
             'count' => $medicines->count(),

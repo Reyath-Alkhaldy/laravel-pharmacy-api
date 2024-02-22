@@ -11,7 +11,7 @@ class FavoriteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $favorites = Favorite::with('medicine')->latest()->paginate();
         $favorites = collect($favorites)->except('links');
@@ -27,14 +27,22 @@ class FavoriteController extends Controller
     public function store(Request $request)
     {
         $dataValidated = $request->validate([
-            'medicine_id' => ['required', 'int','exists:medicines,id'],
+            'medicine_id' => ['required', 'int', 'exists:medicines,id'],
             'device_id' => ['required'],
+            'user_id' => ['sometimes', 'integer'],
         ]);
-        
-        $favorite = Favorite::create($dataValidated);
-
+        $favorite = Favorite::where('medicine_id', $request->input('medicine_id'))->first();
+        if (!$favorite) {
+            $favorite = Favorite::create($dataValidated);
+            $favorite = Favorite::where('medicine_id', $request->medicine_id)->first();
+            return [
+                "message" => "medicine added to favorite",
+                "status" => "success",
+                'favorite' => $favorite,
+            ];
+        }
         return [
-            "message" => "medicine added to favorite",
+            "message" => "الدواء مضاف مسبقا الى المفضلة",
             "status" => "success",
             'favorite' => $favorite,
         ];

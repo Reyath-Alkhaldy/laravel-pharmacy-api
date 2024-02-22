@@ -29,8 +29,12 @@ class CheckOutController extends Controller
      */
     public function index()
     {
-        // $cart = $this->cart->get();
-        $orders =  Order::paginate();
+        // $orders =  Order::where('user_id',auth()->user()->id)
+        // ->with('medicines')
+        // ->paginate();
+        $orders =  auth()->user()->orders()->paginate();
+        $orders = collect($orders)->except('links');
+
         return response()->json([
             'status' => 'success',
             'data' => $orders,
