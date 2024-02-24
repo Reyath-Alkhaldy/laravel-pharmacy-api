@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Favorite;
+
 
 class Medicine extends Model
 {
@@ -57,12 +59,6 @@ class Medicine extends Model
     {
         $Builder->where('status','active');
     }
-    // public function scopeID(Builder $Builder,$id )
-    // {
-    //     $Builder->where('pharmacy_id',$id );
-    // }
-    
-
 
     /**
      * Scope a query to only include 
@@ -88,14 +84,14 @@ class Medicine extends Model
             $query->where('status', $value );
         });
 
-        $builder->when(Auth::check(), function($query){
+        $builder->when(Auth::guard('sanctum')->check(), function($query){
             $query->with(['favorites' => function($q){
-                $q->where('user_id',Auth::user()->id);
+                $q->where('user_id',Auth::guard('sanctum')->id() );
             }]);
         });
 
         // $builder->whereHas('favorites');
-        $builder->when(Auth::guest(), function ($query) {
+        $builder->when(Auth::guard('sanctum')->guest(), function ($query) {
             $query->with(['favorites' => function ($hasMany) {
                 // will exclude all rows but flag the relation as loaded
                 // and therefore add an empty collection as relation

@@ -64,6 +64,8 @@ Route::get('/unreadNotifications',[ NotificationController::class,'unreadNotific
 Route::get('/readNotifications',[ NotificationController::class,'readNotifications']);
 Route::apiResource('/consultaions', ConsultationController::class);
 Route::get('/consultations/doctors',[ConsultationController::class,'doctors']);
+// Api favorites
+Route::apiResource('/favorites', FavoriteController::class);
 
 });
 
@@ -73,7 +75,6 @@ Route::apiResource('/main-categories', MainCategoryController::class);
 Route::apiResource('/medicines', MedicineController::class);//->middleware(['auth:sanctum']);
 Route::apiResource('/spicialties', SpecialtyController::class);
 Route::apiResource('/doctors', DoctorController::class);
-Route::apiResource('/favorites', FavoriteController::class);
 
 
 

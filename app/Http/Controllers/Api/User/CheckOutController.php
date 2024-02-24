@@ -102,7 +102,7 @@ class CheckOutController extends Controller
     public function show(string $id)
     {
         // return  Order::where('id',$id)->with('orderMedicines:id,name_en,name_ar,price,pharmacy_id')->get();
-        $orders =  Order::where('id', $id)->with('medicines')->get();
+        $orders =  Order::where('id', $id)->with('medicines')->first();
         return response()->json([
             'status' => 'success',
             'order' => $orders,

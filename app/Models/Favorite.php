@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Observers\CartObserver;
 use App\Observers\FavoriteObserver;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,9 +27,9 @@ class Favorite extends Pivot
     public static function booted()
     {
         static::observe(FavoriteObserver::class);
-        static::addGlobalScope('device_id', function (Builder $builder) {
-            $builder->where('device_id', static::getDeviceId());
-        });
+        // static::addGlobalScope('device_id', function (Builder $builder) {
+        //     $builder->where('device_id', static::getDeviceId());
+        // });
     }
     public static function  getDeviceId()
     {

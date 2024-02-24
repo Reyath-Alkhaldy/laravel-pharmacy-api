@@ -43,7 +43,7 @@ class CartController extends Controller
         ]);
 
         $medicine = Medicine::findOrfail($request->post('medicine_id'));
-        return  $this->cart->add($medicine, $request->post('quantity'));
+        $this->cart->add($medicine, $request->post('quantity'));
 
         if ($request->acceptsJson()) {
             return [

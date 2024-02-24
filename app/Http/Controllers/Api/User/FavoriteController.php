@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Models\Favorite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FavoriteController extends Controller
 {
@@ -31,6 +32,7 @@ class FavoriteController extends Controller
             'device_id' => ['required'],
             'user_id' => ['sometimes', 'integer'],
         ]);
+        Auth::guard('sanctum')->check() ? $dataValidated['user_id'] = Auth::guard('sanctum')->user()->id : null;
         $favorite = Favorite::where('medicine_id', $request->input('medicine_id'))->first();
         if (!$favorite) {
             $favorite = Favorite::create($dataValidated);
@@ -69,6 +71,12 @@ class FavoriteController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $favorite = Favorite::destroy($id);
+    
+        return [
+            "message" => "medicine delete from favorite",
+            "status" => "success",
+            'favorite' => $favorite,
+        ];
     }
 }
