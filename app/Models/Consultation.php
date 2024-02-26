@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -34,6 +35,7 @@ class Consultation extends Model
     {
         return $this->belongsTo(User::class);
     }
+    
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
@@ -67,7 +69,7 @@ class Consultation extends Model
     public function scopeFilt(Builder $builder, $filters)
     {
         $options = array_merge([
-            'user_id' => null,
+            'user_id' => Auth::guard('sanctum')->id(),
         ], $filters);
         $builder->when($options['user_id'], function ($query, $value) {
             $query->where('user_id', $value)->latest();

@@ -22,14 +22,11 @@ class Favorite extends Pivot
      */
     protected $table = 'favorites';
 
-    protected $fillable = ['id', 'user_id', 'medicine_id', 'device_id'];
+    protected $fillable = ['id', 'user_id', 'medicine_id'];
 
     public static function booted()
     {
         static::observe(FavoriteObserver::class);
-        // static::addGlobalScope('device_id', function (Builder $builder) {
-        //     $builder->where('device_id', static::getDeviceId());
-        // });
     }
     public static function  getDeviceId()
     {

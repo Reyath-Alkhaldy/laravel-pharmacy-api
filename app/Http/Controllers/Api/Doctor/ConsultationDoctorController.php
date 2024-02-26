@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Doctor;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Consultation\StoreConsultationRequest;
+use App\Http\Requests\Consultation\StoreConsultationDoctorRequest;
 use App\Models\Consultation;
 use App\Models\Doctor;
 use App\Models\User;
@@ -68,7 +68,7 @@ class ConsultationDoctorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreConsultationRequest $request)
+    public function store(StoreConsultationDoctorRequest $request)
     {
 
         // $path = Storage::disk('consultations')->put('images', $request->file('image'));
@@ -92,7 +92,7 @@ class ConsultationDoctorController extends Controller
         ]);
     }
 
-    protected function uploadImage(StoreConsultationRequest $request)
+    protected function uploadImage(StoreConsultationDoctorRequest $request)
     {
         if (!$request->hasFile('image')) {
             return;

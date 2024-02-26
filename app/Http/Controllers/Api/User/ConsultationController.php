@@ -21,9 +21,8 @@ class ConsultationController extends Controller
      */
     public function index(Request $request)
     {
-        // $consultaions =  Consultaion::with(['user','doctor'])->filter($request->all())->latest()->paginate();
         $consultaions =  Consultation::filter($request->all())->latest()->paginate();
-        $user = User::where('id', $request->input('doctor_id'))->first();
+        $user = User::where('id',  Auth::guard('sanctum')->id())->first();
         $doctor = Doctor::with('specialty')->where('id', $request->input('doctor_id'))->first();
         return response()->json([
             'status' => 'success',
@@ -34,11 +33,46 @@ class ConsultationController extends Controller
     }
     public function doctors(Request $request)
     {
+      $currentUserId =  Auth::guard('sanctum')->id();
+        $unreadCountPerDoctor = Doctor::
+        with(['consultation' => function($q){
+            $q->orderBy('consultations.created_at','desc');
+        }])
+        ->
+        whereHas('consultations')
+        ->
+        withCount(['consultations as unread' => function ($query) use ($currentUserId) {
+            $query->where('user_id', $currentUserId)
+                  ->where('type', 'answer')
+                  ->whereNull('read_at');
+        }])
+        // ->orderBy('created_at', 'desc')
+        ->get();
+        return $unreadCountPerDoctor;
+        // $doctors = Doctor::whereHas('consultaions', function ($q) {
+        //          $q->where('type', 'answer')->where('user_id', request()->user()->id);
+        //     })
+            // ->
+            // with(['consultaions' => function($q){
+            //     $q->where('type','answer')->count();
+            // }])
+        //     ->get();
+        // return $doctors;
+
+
+
         $query =  Consultation::query();
         $doctors =  $query
             // ->filt($request->all())
             ->with('doctor')
-            ->where('user_id', Auth::id())
+            // ->with(['doctor' => function ($q,$d) {
+            //     $q->with(['consultaions' => function ($qq)use ($d) {
+            //         $qq->selectRaw('count(consultations.read_at) as total_msg');
+            //     }]);
+            // }])
+            // ->selectRaw('count(consultations.read_at) as total_msg')
+            ->where('user_id', Auth::guard('sanctum')->id())
+
             ->latest()
             ->paginate();
         // return $doctors;
@@ -76,16 +110,17 @@ class ConsultationController extends Controller
 
         // $path = Storage::disk('consultations')->put('images', $request->file('image'));
         $validateData = $request->validated();
+        $validateData['user_id'] = Auth::guard('sanctum')->id();
         $path = $this->uploadImage($request);
-        if($path){
+        if ($path) {
             $validateData['image'] = $path;
         }
         $consultaions =  Consultation::create($validateData);
         $consultaions->load(['user', 'doctor']);
-        if($consultaions->type === 'answer'){
-          $user =  $consultaions->user;
-          $user->notify(new CreatedConsultationNotification($consultaions));
-        }else{
+        if ($consultaions->type === 'answer') {
+            $user =  $consultaions->user;
+            $user->notify(new CreatedConsultationNotification($consultaions));
+        } else {
             $doctor =  $consultaions->doctor;
             $doctor->notify(new CreatedConsultationNotification($consultaions));
         }

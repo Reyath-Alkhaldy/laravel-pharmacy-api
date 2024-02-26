@@ -8,22 +8,27 @@ use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth:sanctum');
     }
-    
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $user = Auth::user();
-        $data = $user->notifications()->paginate();
-        $count = $user->unreadNotifications()->count();
+        $notifications = $user->notifications()->where('data->doctor_id',9)->paginate();
+        $unreadNotifications = $user->unreadNotifications()->count();
+        $readNotifications = $user->readNotifications()->count();
+        $notifications = collect($notifications)->except('links');
+
         return response()->json([
             'status' => 'success',
-            'unreadNotifications' =>  $count,
-            'notifications' =>  $data,
+            'unreadNotifications' =>  $unreadNotifications,
+            'readNotifications' =>  $readNotifications,
+            'notifications' =>  $notifications,
         ]);
     }
     /**
@@ -42,7 +47,15 @@ class NotificationController extends Controller
         $user = Auth::user();
         return $user->unreadNotifications;
     }
-    
+
+    public function markAsRead(Request $request)
+    {
+        $user = Auth::user();
+        // $user->unreadNotifications()->where('notifiable_type', )
+        // $user->unreadNotifications->markAsRead();
+        // $user->unreadNotifications()->update(['read_at' => now()]);
+    }
+
 
     /**
      * Store a newly created resource in storage.

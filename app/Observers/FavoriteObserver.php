@@ -13,7 +13,7 @@ class FavoriteObserver
     public function creating(Favorite $favorite): void
     {
         $favorite->id = Str::uuid();
-        $favorite->device_id = Favorite::getDeviceId();
+        // $favorite->device_id = Favorite::getDeviceId();
     }
     /**
      * Handle the Favorite "created" event.

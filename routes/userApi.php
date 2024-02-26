@@ -55,24 +55,24 @@ Route::middleware('auth:sanctum')->group(function () {
 //!     auth:sanctum 
 Route::middleware('auth:sanctum')->group(function () {
 
-// ! Upload Image 
-Route::post('uploadImage',[UploadImageController::class,'uploadImage']);
+    // ! Upload Image 
+    Route::post('uploadImage', [UploadImageController::class, 'uploadImage']);
 
-//!  Api Routes
-Route::apiResource('/notifications', NotificationController::class);
-Route::get('/unreadNotifications',[ NotificationController::class,'unreadNotifications']);
-Route::get('/readNotifications',[ NotificationController::class,'readNotifications']);
-Route::apiResource('/consultaions', ConsultationController::class);
-Route::get('/consultations/doctors',[ConsultationController::class,'doctors']);
-// Api favorites
-Route::apiResource('/favorites', FavoriteController::class);
-
+    //!  Api Routes
+    Route::apiResource('/notifications', NotificationController::class);
+    Route::get('/unreadNotifications', [NotificationController::class, 'unreadNotifications']);
+    Route::get('/readNotifications', [NotificationController::class, 'readNotifications']);
+    Route::apiResource('/consultaions', ConsultationController::class);
+    Route::get('/consultations/doctors', [ConsultationController::class, 'doctors']);
+    // Api favorites
+    Route::delete('/favorites/remove',[FavoriteController::class,'remove']); 
+    Route::apiResource('/favorites', FavoriteController::class);
 });
 
 
 Route::apiResource('/pharmacies', PharmacyController::class);
 Route::apiResource('/main-categories', MainCategoryController::class);
-Route::apiResource('/medicines', MedicineController::class);//->middleware(['auth:sanctum']);
+Route::apiResource('/medicines', MedicineController::class); //->middleware(['auth:sanctum']);
 Route::apiResource('/spicialties', SpecialtyController::class);
 Route::apiResource('/doctors', DoctorController::class);
 

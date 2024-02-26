@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('favorites', function (Blueprint $table) {
             // $table->id();
             $table->uuid('id')->primary();
-            $table->uuid('device_id');
+            // $table->uuid('device_id')->nullable();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->foreignId('medicine_id')->constrained('medicines')->cascadeOnDelete();
-            $table->unique(['device_id','medicine_id','user_id']);
+            $table->unique(['medicine_id','user_id']);
             $table->timestamps();
         });
     }

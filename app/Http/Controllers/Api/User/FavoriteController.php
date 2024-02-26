@@ -29,7 +29,7 @@ class FavoriteController extends Controller
     {
         $dataValidated = $request->validate([
             'medicine_id' => ['required', 'int', 'exists:medicines,id'],
-            'device_id' => ['required'],
+            // 'device_id' => ['required'],
             'user_id' => ['sometimes', 'integer'],
         ]);
         Auth::guard('sanctum')->check() ? $dataValidated['user_id'] = Auth::guard('sanctum')->user()->id : null;
@@ -72,9 +72,23 @@ class FavoriteController extends Controller
     public function destroy(string $id)
     {
         $favorite = Favorite::destroy($id);
-    
+
         return [
             "message" => "medicine delete from favorite",
+            "status" => "success",
+            'favorite' => $favorite,
+        ];
+    }
+    public function remove()
+    {   $medicine_id= request()->input('medicine_id');
+        $favorite = Favorite::where('medicine_id',$medicine_id)
+            ->where('user_id', Auth::guard('sanctum')->id())
+            ->delete();
+        // $favorite->delete();
+        // $favorite->save();
+        
+        return [
+            "message" => "medicine delete from 1 favorite $medicine_id $favorite",
             "status" => "success",
             'favorite' => $favorite,
         ];
