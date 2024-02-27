@@ -31,75 +31,124 @@ class ConsultationController extends Controller
             'data' => $consultaions,
         ]);
     }
-    public function doctors(Request $request)
+
+    public function doctors()
     {
-      $currentUserId =  Auth::guard('sanctum')->id();
-        $unreadCountPerDoctor = Doctor::
-        with(['consultation' => function($q){
-            $q->orderBy('consultations.created_at','desc');
-        }])
-        ->
-        whereHas('consultations')
-        ->
-        withCount(['consultations as unread' => function ($query) use ($currentUserId) {
-            $query->where('user_id', $currentUserId)
-                  ->where('type', 'answer')
-                  ->whereNull('read_at');
-        }])
-        // ->orderBy('created_at', 'desc')
-        ->get();
-        return $unreadCountPerDoctor;
-        // $doctors = Doctor::whereHas('consultaions', function ($q) {
-        //          $q->where('type', 'answer')->where('user_id', request()->user()->id);
-        //     })
-            // ->
-            // with(['consultaions' => function($q){
-            //     $q->where('type','answer')->count();
-            // }])
-        //     ->get();
-        // return $doctors;
-
-
-
+        $currentUserId =  Auth::guard('sanctum')->id();
         $query =  Consultation::query();
-        $doctors =  $query
-            // ->filt($request->all())
-            ->with('doctor')
-            // ->with(['doctor' => function ($q,$d) {
-            //     $q->with(['consultaions' => function ($qq)use ($d) {
-            //         $qq->selectRaw('count(consultations.read_at) as total_msg');
-            //     }]);
-            // }])
-            // ->selectRaw('count(consultations.read_at) as total_msg')
-            ->where('user_id', Auth::guard('sanctum')->id())
-
-            ->latest()
+        $doctors =  $query->join('doctors', 'consultations.doctor_id', 'doctors.id')
+            ->with(['doctor' => function ($q) use ($currentUserId) {
+                // $q->join('consultations', 'consultations.doctor_id', 'doctors.id');//->latest('consultations.created_at');
+                $q->withCount(['consultations as unread_count' => function ($qq) use ($currentUserId) {
+                    $qq->where('user_id', $currentUserId)->whereNull('read_at')->where('type', 'answer');
+                }]);
+                $q->with(['consultation' => function ($qq) use ($currentUserId) {
+                    $qq->where('user_id', $currentUserId);
+                }]);
+            }])
+            ->select("doctor_id", DB::raw(' count(*) as total'))
+            ->where('user_id', $currentUserId)
+            ->groupBy('consultations.doctor_id')
+            ->latest('consultations.created_at')
             ->paginate();
-        // return $doctors;
+        // return $doctors->all();
         $data = collect($doctors->all());
-        $data = $data->groupBy(function ($item) {
-            return $item->doctor_id;
-        });
-        $data  = $data->map(function ($a) {
-            return $a->first();
-        });
-        // return $data;
         $dd = collect();
-        foreach ($data as $key => $value) {
-            $dd->push($value);
+        foreach ($data as   $value) {
+            $dd->push($value['doctor']);
         }
         // return $dd;
         $data = collect($doctors);
         $data = $data->merge(['data' => $dd]);
         $data = $data->except('links');
         // return $data;
-
         return response()->json([
             'status' => 'success',
             'message' => 'success',
             'consultations' => $data,
         ]);
     }
+    public function marksRead(Request $request)
+    {
+        $currentUserId =  Auth::guard('sanctum')->id();
+        $doctorId =  $request->input('doctor_id');
+
+        $consultations =  Consultation::where('user_id', $currentUserId)
+            ->where('doctor_id', $doctorId)
+            ->where('type', 'answer')
+            ->get();
+        foreach ($consultations as   $consultation) {
+            $consultation->update(['read_at' => now()]);
+            // $consultations;
+        }
+        return response()->json([
+            'status' => 'success',
+            'message' => 'marks read were success',
+        ]);
+    }
+
+
+
+    // public function doctors(Request $request)
+    // {
+    //   $currentUserId =  Auth::guard('sanctum')->id();
+    //     $unreadCountPerDoctor = Doctor::
+    //     with(['consultation' => function($q){
+    //         $q->orderBy('consultations.created_at','desc');
+    //     }])
+    //     ->
+    //     whereHas('consultations')
+    //     ->
+    //     withCount(['consultations as unread' => function ($query) use ($currentUserId) {
+    //         $query->where('user_id', $currentUserId)
+    //               ->where('type', 'answer')
+    //               ->whereNull('read_at');
+    //     }])
+    //     // ->orderBy('created_at', 'desc')
+    //     ->get();
+    //     return $unreadCountPerDoctor;
+
+
+
+    //     $query =  Consultation::query();
+    //     $doctors =  $query
+    //         // ->filt($request->all())
+    //         ->with('doctor')
+    //         // ->with(['doctor' => function ($q,$d) {
+    //         //     $q->with(['consultaions' => function ($qq)use ($d) {
+    //         //         $qq->selectRaw('count(consultations.read_at) as total_msg');
+    //         //     }]);
+    //         // }])
+    //         // ->selectRaw('count(consultations.read_at) as total_msg')
+    //         ->where('user_id', Auth::guard('sanctum')->id())
+
+    //         ->latest()
+    //         ->paginate();
+    //     // return $doctors;
+    //     $data = collect($doctors->all());
+    //     $data = $data->groupBy(function ($item) {
+    //         return $item->doctor_id;
+    //     });
+    //     $data  = $data->map(function ($a) {
+    //         return $a->first();
+    //     });
+    //     // return $data;
+    //     $dd = collect();
+    //     foreach ($data as $key => $value) {
+    //         $dd->push($value);
+    //     }
+    //     // return $dd;
+    //     $data = collect($doctors);
+    //     $data = $data->merge(['data' => $dd]);
+    //     $data = $data->except('links');
+    //     // return $data;
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'success',
+    //         'consultations' => $data,
+    //     ]);
+    // }
 
 
     /**
@@ -138,6 +187,7 @@ class ConsultationController extends Controller
         $file = $request->file('image');
         return $file->store('images', "consultations");
     }
+
 
     /**
      * Update the specified resource in storage.

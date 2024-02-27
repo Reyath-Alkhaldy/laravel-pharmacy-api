@@ -53,9 +53,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
-    public function consultaions()
+    public function consultations()
     {
-        $this->hasMany(Consultation::class);
+       return $this->hasMany(Consultation::class);
+    }
+    public function consultation()
+    {
+       return $this->hasOne(Consultation::class)->latest();
     }
     public function favorites()
     {

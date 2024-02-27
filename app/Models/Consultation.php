@@ -14,7 +14,7 @@ class Consultation extends Model
     use HasFactory;
     protected $fillable = [
         'id', 'user_id', 'doctor_id', 'text',
-        'image', 'type',
+        'image', 'type','read_at'
     ];
 
     /**

@@ -62,8 +62,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/notifications', NotificationController::class);
     Route::get('/unreadNotifications', [NotificationController::class, 'unreadNotifications']);
     Route::get('/readNotifications', [NotificationController::class, 'readNotifications']);
+    // ! consultaions 
     Route::apiResource('/consultaions', ConsultationController::class);
-    Route::get('/consultations/doctors', [ConsultationController::class, 'doctors']);
+    Route::get('consultations/doctors', [ConsultationController::class, 'doctors']);
+    Route::post('/marksRead', [ConsultationController::class, 'marksRead']);
     // Api favorites
     Route::delete('/favorites/remove',[FavoriteController::class,'remove']); 
     Route::apiResource('/favorites', FavoriteController::class);
