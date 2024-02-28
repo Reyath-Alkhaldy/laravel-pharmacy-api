@@ -32,42 +32,7 @@ class ConsultationController extends Controller
         ]);
     }
 
-    public function doctors()
-    {
-        $currentUserId =  Auth::guard('sanctum')->id();
-        $query =  Consultation::query();
-        $doctors =  $query->join('doctors', 'consultations.doctor_id', 'doctors.id')
-            ->with(['doctor' => function ($q) use ($currentUserId) {
-                // $q->join('consultations', 'consultations.doctor_id', 'doctors.id');//->latest('consultations.created_at');
-                $q->withCount(['consultations as unread_count' => function ($qq) use ($currentUserId) {
-                    $qq->where('user_id', $currentUserId)->whereNull('read_at')->where('type', 'answer');
-                }]);
-                $q->with(['consultation' => function ($qq) use ($currentUserId) {
-                    $qq->where('user_id', $currentUserId);
-                }]);
-            }])
-            ->select("doctor_id", DB::raw(' count(*) as total'))
-            ->where('user_id', $currentUserId)
-            ->groupBy('consultations.doctor_id')
-            ->latest('consultations.created_at')
-            ->paginate();
-        // return $doctors->all();
-        $data = collect($doctors->all());
-        $dd = collect();
-        foreach ($data as   $value) {
-            $dd->push($value['doctor']);
-        }
-        // return $dd;
-        $data = collect($doctors);
-        $data = $data->merge(['data' => $dd]);
-        $data = $data->except('links');
-        // return $data;
-        return response()->json([
-            'status' => 'success',
-            'message' => 'success',
-            'consultations' => $data,
-        ]);
-    }
+    
     public function marksRead(Request $request)
     {
         $currentUserId =  Auth::guard('sanctum')->id();

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\MainCategory;
 use App\Models\Medicine;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class PharmacyController extends Controller
 {
@@ -16,9 +17,14 @@ class PharmacyController extends Controller
      */
     public function index(Request $request)
     {
-        $pharmacies = Pharmacy::
-        select('id','name','email','address','phone_number','city_id','image')->
-        with('city')->paginate(8);
+        $search =  $request->input('search');
+
+        $pharmacies = Pharmacy::select('id', 'name', 'email', 'address', 'phone_number', 'city_id', 'image')
+            ->when($search, function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%");
+            })
+            ->with('city')->paginate(8);
         return response()->json([
             'status' => 'success',
             'data' => $pharmacies

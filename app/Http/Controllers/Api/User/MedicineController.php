@@ -14,9 +14,14 @@ class MedicineController extends Controller
      */
     public function index(Request $request)
     {
+        $search =  $request->input('search');
         $medicines = Medicine::where('count', '>', 0)
         ->select()
         ->filter($request->all())
+        ->when($search, function ($query) use ($search) {
+            $query->where('name_ar', 'like', "%{$search}%")
+                ->orWhere('name_en', 'like', "%{$search}%");
+        })
         ->get();
         // $medicines->first()->favorites->first()->pivot
         return response()->json([
