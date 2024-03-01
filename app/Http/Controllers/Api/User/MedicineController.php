@@ -22,12 +22,11 @@ class MedicineController extends Controller
             $query->where('name_ar', 'like', "%{$search}%")
                 ->orWhere('name_en', 'like', "%{$search}%");
         })
-        ->get();
-        // $medicines->first()->favorites->first()->pivot
+        ->paginate();
         return response()->json([
             'status' => 'success',
             'count' => $medicines->count(),
-            'medicines' => $medicines]);
+            'data' => $medicines]);
     }
 
     /**
