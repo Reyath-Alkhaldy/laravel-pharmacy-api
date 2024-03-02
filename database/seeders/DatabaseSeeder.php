@@ -30,21 +30,21 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-            Admin::factory(10)->create();
+        // Admin::factory(10)->create();
 
-        Specialty::factory(5)->create();
-        User::factory(10)->create();
-        Doctor::factory(10)->create();
-        Consultation::factory(100)->create();
+        // Specialty::factory(5)->create();
+        // User::factory(10)->create();
+        // Doctor::factory(10)->create();
+        // Consultation::factory(100)->create();
 
 
-        // City
-        $this->call([
-            CitySeeder::class,
-        ]);
-        Pharmacy::factory(10)->create();
-        MainCategory::factory(10)->create();
-        SubCategory::factory(20)->create();
-        Medicine::factory(40)->create();
+        // // City
+        // $this->call([
+        //     CitySeeder::class,
+        // ]);
+        // Pharmacy::factory(10)->create();
+        // MainCategory::factory(10)->create();
+        // SubCategory::factory(20)->create();
+        Medicine::factory(500)->create();
     }
 }

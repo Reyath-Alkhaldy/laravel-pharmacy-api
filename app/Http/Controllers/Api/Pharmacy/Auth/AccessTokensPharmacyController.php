@@ -1,34 +1,34 @@
 <?php
 
-namespace App\Http\Controllers\Api\Doctor\Auth;
+namespace App\Http\Controllers\Api\Pharmacy\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Doctor\Auth\LoginDoctorRequest;
-use App\Models\Doctor;
+use App\Http\Requests\Pharmacy\Auth\LoginPharmacyRequest;
+use App\Models\Pharmacy;
 use App\Trait\GetUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 
-class AccessTokensDoctorController extends Controller
+class AccessTokensPharmacyController extends Controller
 {
     use GetUser;
-    public function store(LoginDoctorRequest $request)
+    public function store(LoginPharmacyRequest $request)
     {
-        $doctor = Doctor::where('email', $request->input('email'))->first();
-        if ($doctor && Hash::check($request->password, $doctor->password)) {
+        $pharmacy = Pharmacy::where('email', $request->input('email'))->first();
+        if ($pharmacy && Hash::check($request->password, $pharmacy->password)) {
             $device_name = $request->post("device_name", $request->userAgent());
             // $doctor->tokens()->delete();
-            $token = $doctor->createToken($device_name);
+            $token = $pharmacy->createToken($device_name);
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,
-                "doctor" => $doctor,
+                "pharmacy" => $pharmacy,
             ]);
         }
         return response()->json([
             'status' => 'invalid',
-            "message" => "invalid credentials",
+            "message" => "invalid credentials, Email Or Password Not Correct",
         ], 200);
     }
 

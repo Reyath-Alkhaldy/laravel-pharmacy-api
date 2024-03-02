@@ -23,10 +23,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('username')->nullable()->unique();
+            // $table->string('username')->nullable()->unique();
             $table->string('phone_number')->unique();
             $table->string('password');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->foreignId('city_id')->nullable()->constrained('cities')->nullOnDelete();
             $table->string('image')->nullable();
             $table->enum('status',['active','inactive'])->default('inactive');

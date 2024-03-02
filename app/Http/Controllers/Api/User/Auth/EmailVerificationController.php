@@ -30,7 +30,7 @@ class EmailVerificationController extends Controller
         $otp = $this->otp->validate($request->email, $request->otp);
         if (!$otp->status) {
             return response()->json([
-                'status' => 'valid',
+                'status' => 'invalid',
             ]);
         }
         $user = User::where('email', $request->email)->update([

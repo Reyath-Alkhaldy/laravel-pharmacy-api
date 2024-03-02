@@ -22,7 +22,7 @@ class MedicineController extends Controller
             $query->where('name_ar', 'like', "%{$search}%")
                 ->orWhere('name_en', 'like', "%{$search}%");
         })
-        ->paginate();
+        ->paginate(9);
         return response()->json([
             'status' => 'success',
             'count' => $medicines->count(),

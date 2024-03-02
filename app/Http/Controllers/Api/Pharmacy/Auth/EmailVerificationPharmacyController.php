@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api\Doctor\Auth;
+namespace App\Http\Controllers\Api\Pharmacy\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\EmailVerificatinRequest;
-use App\Models\Doctor;
+use App\Models\Pharmacy;
 use App\Notifications\EmailVerificationNotificatin;
 // use Ichtrojan\Otp\Otp;
 use Illuminate\Http\Request;
 use Otp;
 
-class EmailVerificationDoctorController extends Controller
+class EmailVerificationPharmacyController extends Controller
 {
     private $otp;
     public function __construct()
@@ -33,12 +33,12 @@ class EmailVerificationDoctorController extends Controller
                 'status' => 'invalid',
             ]);
         }
-        $doctor = Doctor::where('email', $request->email)->update([
+        $pharmacy = Pharmacy::where('email', $request->email)->update([
             'email_verified_at' => now(),
         ]);;
         return response()->json([
             'status' => 'success',
-            'doctor' => $doctor,
+            'pharmacy' => $pharmacy,
         ], 200);
     }
 }

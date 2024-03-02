@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api\Doctor\Auth;
+namespace App\Http\Controllers\Api\Pharmacy\Auth;
 
 use App\Actions\Fortify\PasswordValidationRules;
 use App\Http\Controllers\Controller;
-use App\Models\Doctor;
+use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Otp;
 // use Hash;
 
-class ResetPasswordDoctorController extends Controller
+class ResetPasswordPharmacyController extends Controller
 {
     use PasswordValidationRules;
 
@@ -34,8 +34,8 @@ class ResetPasswordDoctorController extends Controller
             ]);
         }
 
-        $doctor = Doctor::where('email', $request->input('email'))->first();
-        $doctor->update([
+        $pharmacy = Pharmacy::where('email', $request->input('email'))->first();
+        $pharmacy->update([
             'password' => Hash::make($request->password),
         ]);
         // $doctor->tokens()->delete();

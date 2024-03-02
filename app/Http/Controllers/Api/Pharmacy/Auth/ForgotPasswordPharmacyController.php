@@ -1,25 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Api\Doctor\Auth;
+namespace App\Http\Controllers\Api\Pharmacy\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Doctor;
+use App\Models\Pharmacy;
 use App\Notifications\ResetPasswordNotificatin;
-use App\Trait\GetUser;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class ForgotPasswordDoctorController extends Controller
+class ForgotPasswordPharmacyController extends Controller
 {
-    use GetUser;
+    // use GetUser;
     public function forgotPassword(Request $request)
     {
         $request->validate([
             'email' => ['required', 'email', 'max:255'],
         ]);
-        $doctor = Doctor::where('email', $request->input('email'))->first();
-        if ($doctor) {
-            $doctor->notify(new ResetPasswordNotificatin);
+        $pharmacy = Pharmacy::where('email', $request->input('email'))->first();
+        if ($pharmacy) {
+            $pharmacy->notify(new ResetPasswordNotificatin);
             return response()->json([
                 'status' => 'success',
             ]);
@@ -28,6 +27,5 @@ class ForgotPasswordDoctorController extends Controller
             'status' => 'invalid',
             'message' => "Email Not Correct"
         ]);
-        // invalid
     }
 }

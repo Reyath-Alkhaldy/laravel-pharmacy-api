@@ -30,7 +30,7 @@ class ResetPasswordController extends Controller
         $otp = $this->otp->validate($request->email, $request->otp);
         if (!$otp->status) {
             return response()->json([
-                'status' => 'vaild',
+                'status' => 'invalid',
             ]);
         }
 
