@@ -42,5 +42,6 @@ class ResetPasswordPharmacyController extends Controller
         return response()->json([
             'status' => 'success'
         ]);
+        // newww
     }
 }
