@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use App\Notifications\EmailVerificationNotificatin;
 use App\Trait\GetUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,10 +21,13 @@ class AccessTokensController extends Controller
             $device_name = $request->post("device_name", $request->userAgent());
             // $user->tokens()->delete();
             $token = $user->createToken($device_name);
+            //  if ($pharmacy->email_verified_at == null) will resend email verification code 
+            $user->email_verified_at ?? $user->notify(new EmailVerificationNotificatin());
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,
                 "user" => $user,
+                'email_verified_at' => $user->email_verified_at,
             ]);
         }
         return response()->json([

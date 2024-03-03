@@ -38,7 +38,7 @@ class ResetPasswordPharmacyController extends Controller
         $pharmacy->update([
             'password' => Hash::make($request->password),
         ]);
-        // $doctor->tokens()->delete();
+        // $pharmacy->tokens()->delete();
         return response()->json([
             'status' => 'success'
         ]);

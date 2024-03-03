@@ -38,7 +38,7 @@ class RegisterPharmacyRequest extends FormRequest
                 Rule::unique(Doctor::class,'email'),
                 Rule::unique(Pharmacy::class,'email'),
             ],
-            'password' =>['required'],
+            'password' =>['required', $this->passwordRules()],
             'phone_number' => [
                 'required', 'string', 'max:15',
                 Rule::unique(User::class,'phone_number'),

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Doctor\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Doctor\Auth\LoginDoctorRequest;
 use App\Models\Doctor;
+use App\Notifications\EmailVerificationNotificatin;
 use App\Trait\GetUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,10 +21,13 @@ class AccessTokensDoctorController extends Controller
             $device_name = $request->post("device_name", $request->userAgent());
             // $doctor->tokens()->delete();
             $token = $doctor->createToken($device_name);
+            //  if ($pharmacy->email_verified_at == null) will resend email verification code 
+            $doctor->email_verified_at ?? $doctor->notify(new EmailVerificationNotificatin());
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,
                 "doctor" => $doctor,
+                'email_verified_at' =>$doctor->email_verified_at,
             ]);
         }
         return response()->json([
