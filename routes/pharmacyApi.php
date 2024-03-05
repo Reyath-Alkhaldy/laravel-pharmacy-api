@@ -6,6 +6,10 @@ use App\Http\Controllers\Api\Pharmacy\Auth\EmailVerificationPharmacyController;
 use App\Http\Controllers\Api\Pharmacy\Auth\ForgotPasswordPharmacyController;
 use App\Http\Controllers\Api\Pharmacy\Auth\ProfilePharmacyController;
 use App\Http\Controllers\Api\Pharmacy\Auth\ResetPasswordPharmacyController;
+use App\Http\Controllers\Api\Pharmacy\MainCategoryController;
+use App\Http\Controllers\Api\Pharmacy\MedicineController;
+use App\Http\Controllers\Api\Pharmacy\SubCategoryController;
+// use App\Http\Controllers\Web\;
 use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +19,7 @@ Route::prefix('/pharmacy')->group(function () {
 
     Route::get('pharmacies', function () {
         return response()->json([
-            'data' => Pharmacy::all(),
+            'pharmacies' => Pharmacy::all(),
         ]);
     });
 
@@ -43,6 +47,8 @@ Route::prefix('/pharmacy')->group(function () {
 
     //!     auth:sanctum 
     Route::middleware('auth:sanctum')->group(function () {
-
+        Route::apiResource('main-categories',MainCategoryController::class);
+        Route::apiResource('sub-categories', SubCategoryController::class);
+        Route::apiResource('medicines',  MedicineController::class);
     });
 });

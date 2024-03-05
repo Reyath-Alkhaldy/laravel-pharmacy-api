@@ -26,7 +26,6 @@ class PharmacyFactory extends Factory
         return [
             'name' =>  $name_en,
             'email' => fake()->unique()->safeEmail(),
-            'username' =>  $fakr->userName,
             'password' =>   Hash::make('password'),
             'address' => $fakr->address,
             'image' => $this->faker->imageUrl(600, 600),

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PharmacyRequest;
+use App\Http\Requests\Pharmacy\PharmacyRequest;
 use App\Models\Pharmacy;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;

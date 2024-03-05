@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('doctor_id')->nullable()->constrained('doctors')->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->text('text')->nullable();
+            $table->timestamp('read_at')->nullable();
             $table->string('image')->nullable();
             $table->enum('type',['question','answer'])->default('question');
             $table->timestamps();

@@ -21,23 +21,21 @@ class MedicineRequest extends FormRequest
      */
     public function rules(): array
     {
-        // $table->string('name_en');
-    // $table->string('name_ar');
-    // $table->string('image');
-    // $table->double('price');
-    // $table->string('description')->nullable();
-    // $table->foreignId('sub_category_id')->nullable()->constrained('sub_categories')->nullOnDelete();
-    // $table->foreignId('pharmacy_id')->constrained('pharmacies')->cascadeOnDelete();
+        // 'name_en', 'name_ar', 'scien_name', 'mark_name', 'image',
+        // 'price', 'discount', 'count', 'status', 'description', 
+        // 'sub_category_id', 'pharmacy_id'
         return [
             "name_en" => "required|string|min:3|max:255",
             "name_ar" => "required|string|min:3|max:255",
-            "count" => "required|integer",
+            "scien_name" => "sometimes|string|min:3|max:255",
+            "mark_name" => "sometimes|string|min:3|max:255",
+            "count" => "sometimes|integer",
             "price" => "required",
-            'image'=>'max:104800000|dimensions:max_width=10000,max_height=10000',
+            "discount" => "sometimes|required",
+            'image'=>['sometimes','max:104800000|dimensions:max_width=10000,max_height=10000'],
             'status'=>'in:active,inactive',
-            'description' => "required|string|min:3|max:255",
-            "sub_category_id" => "required",
-            "pharmacy_id" => "required",
+            'description' => "sometimes|string|min:3|max:255",
+            "sub_category_id" => "required|integer", 
         ];
     }
 }

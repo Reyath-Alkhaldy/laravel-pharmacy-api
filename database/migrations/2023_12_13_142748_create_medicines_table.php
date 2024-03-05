@@ -22,9 +22,9 @@ return new class extends Migration
             $table->id();
             $table->string('name_en');
             $table->string('name_ar');
-            $table->string('scien_name');
-            $table->string('mark_name');
-            $table->string('image');
+            $table->string('scien_name')->nullable();
+            $table->string('mark_name')->nullable();
+            $table->string('image')->nullable();
             $table->decimal('price')->default(0);
             $table->decimal('discount')->default(0);
             $table->integer('count')->default(0);
