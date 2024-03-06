@@ -70,10 +70,12 @@ class CartModelRepository implements CartRepository{
           Cart::where('id',$id)
         ->update(['quantity' => $quantity]);
     }
+
     public function delete($id){
           Cart::where('medicine_id',$id)
           ->delete();
     }
+    
     public function deleteByPharmacyId($id){
         Cart::where('pharmacy_id',$id)
         ->delete();

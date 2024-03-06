@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api\Pharmacy;
 
 // use App\Http\Requests\MedicineRequest;
-use App\Http\Requests\MedicineRequest;
+use App\Http\Requests\StoreMedicineRequest;
+use App\Http\Requests\UpdateMedicineRequest;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,9 +17,7 @@ class MedicineController extends Controller
      */
     public function index(Request $request)
     {
-        // $id = $request->input('pharmacy_id');
         $id =  Auth::guard('sanctum')->id();
-
         $sub_category_id = $request->input('sub_category_id');
         $search =  $request->input('search');
         $medicines = Medicine::where('sub_category_id', $sub_category_id)->where('pharmacy_id', $id)->when($search, function ($query) use ($search) {
@@ -30,7 +29,7 @@ class MedicineController extends Controller
         $medicines = collect($medicines)->except('links');
         return response()->json([
             'status' => 'success',
-            'count' => $medicines->count(),
+            'count' => count($medicines->get('data')) ,
             'data' => $medicines
         ]);
     }
@@ -38,7 +37,7 @@ class MedicineController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(MedicineRequest $request)
+    public function store(StoreMedicineRequest $request)
     {
         $dataValidated = $request->validated();
         $dataValidated['pharmacy_id'] = Auth::guard('sanctum')->id();
@@ -69,9 +68,25 @@ class MedicineController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateMedicineRequest $request, string $id)
     {
-        //
+        $pharmacy_id = Auth::guard('sanctum')->id();
+        try {
+            $medicine = Medicine::where('id', $id)
+                ->where('pharmacy_id', $pharmacy_id)->first();
+            $medicine->update($request->validated())->save();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'medicine was success updated',
+                'medicine' => $medicine,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'invalid',
+                'message' => 'medicine was invalid updated',
+                'medicine' => $medicine,
+            ]);
+        }
     }
 
     /**
@@ -79,6 +94,21 @@ class MedicineController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $pharmacy_id = Auth::guard('sanctum')->id();
+        if ($id) {
+            $medicine = Medicine::where('id', $id)
+                ->where('pharmacy_id', $pharmacy_id)
+                ->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'medicine was success deleted',
+                'medicine' => $medicine,
+            ]);
+        }
+        return response()->json([
+            'status' => 'invalid',
+            'message' => 'medicine was invalid deleted',
+            'medicine' => null,
+        ]);
     }
 }

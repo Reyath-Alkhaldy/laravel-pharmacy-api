@@ -14,9 +14,7 @@ class MainCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        // $id = $request->input('pharmacy_id');
         $id =  Auth::guard('sanctum')->id();
-
         if (isset($id)) {
             $categories = MainCategory::whereHas('medicines', function ($q) use ($id) {
                 $q->where('pharmacy_id', $id);

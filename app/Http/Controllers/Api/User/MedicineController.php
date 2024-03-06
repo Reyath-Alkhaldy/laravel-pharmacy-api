@@ -23,9 +23,10 @@ class MedicineController extends Controller
                 ->orWhere('name_en', 'like', "%{$search}%");
         })
         ->paginate(9);
+        $medicines = collect($medicines)->except('links');
         return response()->json([
             'status' => 'success',
-            'count' => $medicines->count(),
+            'count' => count($medicines->get('data')) ,
             'data' => $medicines]);
     }
 
