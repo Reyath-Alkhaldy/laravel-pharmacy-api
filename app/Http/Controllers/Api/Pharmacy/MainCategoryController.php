@@ -26,12 +26,12 @@ class MainCategoryController extends Controller
                 // }])
                 ->paginate();
         } else {
-            $categories = MainCategory::with('subCategories')->get();
+            $categories = MainCategory::with('medicines')->get();
         }
         $categories = collect($categories)->except('links');
         return response()->json([
             'status' => 'success',
-            'mainCategories' => $categories
+            'data' => $categories
         ]);
     }
 

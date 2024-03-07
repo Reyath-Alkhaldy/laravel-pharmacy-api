@@ -24,12 +24,12 @@ class  SubCategoryController extends Controller
             $q->where('medicines.pharmacy_id', $id);
         })->
         where('main_category_id', $main_category_id)->
-        paginate();
+        get();
 
         $subCategories = collect($subCategories)->except('links');
         return response()->json([
             'status' => 'success',
-            'subCategories' => $subCategories
+            'data' => $subCategories
         ]);
     }
 
