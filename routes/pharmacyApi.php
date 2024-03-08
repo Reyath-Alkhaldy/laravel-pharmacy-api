@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/pharmacy')->group(function () {
 
     Route::get('pharmacies', function () {
-        return Pharmacy::all();
+        return response()->json([
+            'data' => Pharmacy::all(),
+        ]);
     });
 
     Route::post('password/forgot-password', [ForgotPasswordPharmacyController::class, 'forgotPassword']);
