@@ -6,12 +6,15 @@ namespace App\Http\Controllers\Api\Pharmacy;
 use App\Http\Requests\StoreMedicineRequest;
 use App\Http\Requests\UpdateMedicineRequest;
 use App\Models\Medicine;
+use App\Trait\ImageProcessing;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class MedicineController extends Controller
 {
+    use ImageProcessing;
+
     /**
      * Display a listing of the resource.
      */
@@ -41,6 +44,10 @@ class MedicineController extends Controller
     {
         $dataValidated = $request->validated();
         $dataValidated['pharmacy_id'] = Auth::guard('sanctum')->id();
+        $path = $this->uploadImage($request,'medicines','pharmacy');
+        if ($path) {
+            $dataValidated['image'] = $path;
+        }
         try {
             $medicine = Medicine::create($dataValidated);
             return response()->json([

@@ -7,6 +7,17 @@ use Image;
 
 trait ImageProcessing
 {
+
+    protected function uploadImage($request, $path, $disk)
+    {
+        if (!$request->hasFile('image')) {
+            return;
+        }
+        $file = $request->file('image');
+        return $file->store($path, $disk);
+    }
+
+
     public function saveImage($image)
     {
         // $img =Image::make($image);

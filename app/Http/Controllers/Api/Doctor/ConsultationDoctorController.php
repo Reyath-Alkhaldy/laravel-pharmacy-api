@@ -8,12 +8,14 @@ use App\Models\Consultation;
 use App\Models\Doctor;
 use App\Models\User;
 use App\Notifications\CreatedConsultationNotification;
+use App\Trait\ImageProcessing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ConsultationDoctorController extends Controller
 {
+    use ImageProcessing;
     /**
      * Display a listing of the resource.
      */
@@ -84,51 +86,12 @@ class ConsultationDoctorController extends Controller
         ]);
     }
 
-    // public function users(Request $request)
-    // {
-    //     $query =  Consultation::query();
-    //     $users =  $query
-    //         // ->filt($request->all())
-    //         ->with('user')
-    //         ->where('doctor_id', Auth::id())
-    //         ->latest()
-    //         ->paginate();
-    //     // return $users;
-    //     $data = collect($users->all());
-    //     $data = $data->groupBy(function ($item) {
-    //         return $item->user_id;
-    //     });
-    //     $data  = $data->map(function ($a) {
-    //         return $a->first();
-    //     });
-    //     // return $data;
-    //     $dd = collect();
-    //     foreach ($data as $key => $value) {
-    //         $dd->push($value);
-    //     }
-    //     // return $dd;
-    //     $data = collect($users);
-    //     $data = $data->merge(['data' => $dd]);
-    //     $data = $data->except('links');
-    //     // return $data;
-
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'message' => 'success',
-    //         'consultations' => $data,
-    //     ]);
-    // }
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreConsultationDoctorRequest $request)
     {
 
         // $path = Storage::disk('consultations')->put('images', $request->file('image'));
         $validateData = $request->validated();
-        $path = $this->uploadImage($request);
+        $path = $this->uploadImage($request,'images','consultations');
         if ($path) {
             $validateData['image'] = $path;
         }
@@ -147,14 +110,7 @@ class ConsultationDoctorController extends Controller
         ]);
     }
 
-    protected function uploadImage(StoreConsultationDoctorRequest $request)
-    {
-        if (!$request->hasFile('image')) {
-            return;
-        }
-        $file = $request->file('image');
-        return $file->store('images', "consultations");
-    }
+    
 
     /**
      * Update the specified resource in storage.

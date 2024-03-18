@@ -50,6 +50,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'pharmacy' => [
+            'driver' => 'local',
+            'root' => public_path('pharmacy'),
+            'url' => env('APP_URL').'/pharmacy',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
         'uploads' =>[
             'driver' => 'local',
             'root' => public_path('uploads'),
@@ -86,6 +93,7 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
         public_path('consultations') => storage_path('app/consultations'),
+        public_path('pharmacy') => storage_path('app/pharmacy'),
     ],
 
 ];

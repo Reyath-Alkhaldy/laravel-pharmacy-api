@@ -14,7 +14,7 @@ class Consultation extends Model
     use HasFactory;
     protected $fillable = [
         'id', 'user_id', 'doctor_id', 'text',
-        'image', 'type','read_at'
+        'image', 'type', 'read_at'
     ];
 
     /**
@@ -35,7 +35,7 @@ class Consultation extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);

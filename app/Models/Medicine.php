@@ -40,7 +40,7 @@ class Medicine extends Model
         if (Str::startsWith($this->image, ['https://', 'http://']))
             return $this->image;
 
-        return   asset('storage/' . $this->image);
+        return   asset('pharmacy/' . $this->image);
     }
 
     public function subCategory()
