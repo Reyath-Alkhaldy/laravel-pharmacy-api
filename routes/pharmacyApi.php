@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Pharmacy\Auth\ResetPasswordPharmacyController;
 use App\Http\Controllers\Api\Pharmacy\MainAndSubCategoryController;
 use App\Http\Controllers\Api\Pharmacy\MainCategoryController;
 use App\Http\Controllers\Api\Pharmacy\MedicineController;
+use App\Http\Controllers\Api\Pharmacy\MostSellingMedicinesController;
 use App\Http\Controllers\Api\Pharmacy\SubCategoryController;
 // use App\Http\Controllers\Web\;
 use App\Models\Pharmacy;
@@ -50,10 +51,11 @@ Route::prefix('/pharmacy')->group(function () {
 
     //!     auth:sanctum 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('mainCategories',[MainAndSubCategoryController::class, 'mainCategories']);
-        Route::get('subCategories',[MainAndSubCategoryController::class, 'subCategories']);
-        Route::apiResource('main-categories',MainCategoryController::class);
+        Route::get('mainCategories', [MainAndSubCategoryController::class, 'mainCategories']);
+        Route::get('subCategories', [MainAndSubCategoryController::class, 'subCategories']);
+        Route::apiResource('main-categories', MainCategoryController::class);
         Route::apiResource('sub-categories', SubCategoryController::class);
         Route::apiResource('medicines',  MedicineController::class);
     });
+    Route::get('mostSellingMedicines', [MostSellingMedicinesController::class, 'mostSellingMedicines']);
 });

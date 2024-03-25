@@ -19,12 +19,13 @@ class  SubCategoryController extends Controller
         $id =  Auth::guard('sanctum')->id();
 
         $main_category_id = $request->input('main_category_id');
-        $subCategories = SubCategory::
-        whereHas('medicines', function ($q) use ($id) {
+        $subCategories = SubCategory::withCount(['medicines' => function ($q) use ($id) {
             $q->where('medicines.pharmacy_id', $id);
-        })->
-        where('main_category_id', $main_category_id)->
-        get();
+        }])
+            ->whereHas('medicines', function ($q) use ($id) {
+                $q->where('medicines.pharmacy_id', $id);
+            })
+            ->where('main_category_id', $main_category_id)->get();
 
         $subCategories = collect($subCategories)->except('links');
         return response()->json([
@@ -38,7 +39,6 @@ class  SubCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        
     }
 
     /**

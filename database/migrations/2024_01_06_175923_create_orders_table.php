@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('pharmacy_id')->constrained('pharmacies')->cascadeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('number')->unique();
-            $table->string('payment_method');
+            $table->string('payment_method')->nullable();
             $table->enum('status',['pending','processing','delivering','completed','cancelled','refunded'])->default('pending');
             $table->enum('payment_status',['pending','paid','fail'])->default('pending');
             // $table->float('shipping')->default(0); // عمود الضحن 

@@ -27,7 +27,7 @@ class MedicineController extends Controller
             $query->where('name_ar', 'like', "%{$search}%")
                 ->orWhere('name_en', 'like', "%{$search}%");
         })
-            ->paginate(15);
+            ->paginate(12);
 
         $medicines = collect($medicines)->except('links');
         return response()->json([

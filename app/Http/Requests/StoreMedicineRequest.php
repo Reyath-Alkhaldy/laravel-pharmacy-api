@@ -32,7 +32,7 @@ class StoreMedicineRequest extends FormRequest
             "count" => "required|integer",
             "price" => "required",
             "discount" => "sometimes|required",
-            'image'=>['sometimes',],
+            'image'=>['sometimes'],
             // 'image'=>['sometimes','max:104800000|dimensions:max_width=10000,max_height=10000'],
             'status'=>'in:active,inactive',
             'description' => "sometimes|string|min:3|max:255",

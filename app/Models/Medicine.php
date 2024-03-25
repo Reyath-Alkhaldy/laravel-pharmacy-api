@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Favorite;
+use App\Models\OrderMedicine;
 
 
 class Medicine extends Model
@@ -50,6 +51,11 @@ class Medicine extends Model
     public function pharmacy()
     {
         return $this->belongsTo(Pharmacy::class);
+    }
+
+    public function orderMedicines()
+    {
+        return $this->hasMany(OrderMedicine::class);
     }
     public function favorites()
     {
