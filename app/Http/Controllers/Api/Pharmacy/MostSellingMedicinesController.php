@@ -42,7 +42,7 @@ class MostSellingMedicinesController extends Controller
         $mostSellingMedicines =  OrderMedicine::with('medicine')
             ->join('medicines', 'order_medicines.medicine_id', 'medicines.id')
 
-            ->selectRaw('pharmacy_id,medicine_id,SUM(quantity) AS total_sales')
+            ->selectRaw('pharmacy_id,medicine_id,SUM(quantity) AS total_sales,SUM(order_medicines.price * order_medicines.quantity) AS total_price')
             ->groupBy('medicine_id','pharmacy_id')
             ->having('pharmacy_id', $pharmacyId)
             ->orderBy('total_sales', 'desc')
@@ -50,7 +50,7 @@ class MostSellingMedicinesController extends Controller
             // ->dd();
             ->get();
 
-            $ordersDetails = Order::where('pharmacy_id',$pharmacyId)->selectRaw('sum(total) as sum_total,count(id) as order_count')->get();
+            $ordersDetails = Order::where('pharmacy_id',$pharmacyId)->selectRaw('sum(total) as sum_total,count(id) as order_count')->first();
             $medicinesCount = Medicine::where('pharmacy_id',$pharmacyId)->count();
         return response()->json([
             'status' => 'success',

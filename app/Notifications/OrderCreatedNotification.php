@@ -27,7 +27,7 @@ class OrderCreatedNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database','broadcast'];
         // return ['mail'];
     }
 
@@ -48,6 +48,20 @@ class OrderCreatedNotification extends Notification
      * @return array<string, mixed>
      */
     public function toArray(object $notifiable): array
+    {
+        return [
+            'pharmacy_id' => $this->order->pharmacy_id,
+            'user_id' => $this->order->user_id,
+            'number' => $this->order->number,
+            'payment_status' => $this->order->payment_status,
+            'payment_method' => $this->order->payment_method,
+            'status' => $this->order->status,
+            'discount' => $this->order->discount,
+            'total' => $this->order->total,
+            'tax' => $this->order->tax,
+        ];
+    }
+    public function toBroadcast(object $notifiable): array
     {
         return [
             'pharmacy_id' => $this->order->pharmacy_id,
