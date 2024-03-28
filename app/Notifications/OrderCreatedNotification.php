@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -61,9 +62,9 @@ class OrderCreatedNotification extends Notification
             'tax' => $this->order->tax,
         ];
     }
-    public function toBroadcast(object $notifiable): array
+    public function toBroadcast(object $notifiable)
     {
-        return [
+        return new BroadcastMessage([
             'pharmacy_id' => $this->order->pharmacy_id,
             'user_id' => $this->order->user_id,
             'number' => $this->order->number,
@@ -73,6 +74,6 @@ class OrderCreatedNotification extends Notification
             'discount' => $this->order->discount,
             'total' => $this->order->total,
             'tax' => $this->order->tax,
-        ];
+        ]);
     }
 }

@@ -48,6 +48,10 @@ return [
             'driver' => 'token',
             'provider' => 'doctors',
         ],
+        'pharmacy' => [
+            'driver' => 'token',
+            'provider' => 'pharmacies',
+        ],
     ],
 
     /*
@@ -79,6 +83,10 @@ return [
         'doctors' => [
             'driver' => 'eloquent',
             'model' => App\Models\Doctor::class,
+        ],
+        'pharmacies' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Pharmacy::class,
         ],
 
         // 'users' => [
@@ -120,6 +128,12 @@ return [
             'throttle' => 60,
         ],
         'doctors' => [
+            'provider' => 'doctors',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'pharmacies' => [
             'provider' => 'doctors',
             'table' => 'password_reset_tokens',
             'expire' => 60,
