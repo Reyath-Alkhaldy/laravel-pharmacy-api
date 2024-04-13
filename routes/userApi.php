@@ -19,7 +19,11 @@ use App\Http\Controllers\Api\User\NotificationController;
 use App\Http\Controllers\Api\User\UploadImageController;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
+
+// Broadcast::routes(["auth:sanctum"]);
+Broadcast::routes();
 
 Route::get('users', function () {
     return User::all();
@@ -67,7 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('consultations/doctors', [DoctorController::class, 'doctors']);
     Route::post('/marksRead', [ConsultationController::class, 'marksRead']);
     // Api favorites
-    Route::delete('/favorites/remove',[FavoriteController::class,'remove']); 
+    Route::delete('/favorites/remove', [FavoriteController::class, 'remove']);
     Route::apiResource('/favorites', FavoriteController::class);
 });
 

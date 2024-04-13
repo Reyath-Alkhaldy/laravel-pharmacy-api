@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Events\OrderCreated;
+use App\Events\OrderCreated2;
 use App\Http\Controllers\Controller;
 use App\Models\Medicine;
 use App\Models\Order;
@@ -81,6 +82,7 @@ class CheckOutController extends Controller
             $order->load('pharmacy');
             // ! event OrderCreated with listeners
             event(new OrderCreated($order));
+            // event(new OrderCreated2($order));
             DB::commit();
             return response()->json([
                 'status' => 'success',

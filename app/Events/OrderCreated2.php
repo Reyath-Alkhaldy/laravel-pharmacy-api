@@ -11,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class OrderCreated implements ShouldBroadcast
+class OrderCreated2 implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -38,7 +38,7 @@ class OrderCreated implements ShouldBroadcast
     }
     public function broadcastAs()
     {
-        return 'orders';
+        return 'papers';
     }
     public function broadcastWith()
     {

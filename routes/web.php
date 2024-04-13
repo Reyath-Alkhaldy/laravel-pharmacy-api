@@ -19,14 +19,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::get('/reset-password/{token}', function($token){
-    return $token;
-})
-                ->middleware(['guest:'.config('fortify.guard')])
-                ->name('password.reset');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// });
+// Route::get('/reset-password/{token}', function($token){
+//     return $token;
+// })
+//                 ->middleware(['guest:'.config('fortify.guard')])
+//                 ->name('password.reset');
 
 // Route::get('/',[PharmacyController::class,'index'] );
 // // Route::get('/if', function () {

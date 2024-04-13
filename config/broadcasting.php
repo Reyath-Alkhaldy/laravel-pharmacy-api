@@ -74,12 +74,12 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                 // 'cluster' => env('PUSHER_APP_CLUSTER'),
-                'encrypted' => true,
+                'encrypted' => false,
                 // 'host' => '127.0.0.1',
                 // 'port' => 6001,
-                // 'scheme' => 'http',
+                // 'scheme' => 'http',d0a7ae18fc1a98f1b917
                 'cluster' => 'ap2',
-                'useTLS' => true
+                'useTLS' => false
             ],
         ],
 
