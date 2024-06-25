@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('consultations', function (Blueprint $table) {
-            $table->timestamp('read_at')->nullable();
+        Schema::create('fcm_token_devices', function (Blueprint $table) {
+            $table->id();
+            $table->stirng('token');
+            $table->stirng('device');
+            $table->morphs('tokenable');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('consultations', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('fcm_token_devices');
     }
 };

@@ -49,7 +49,9 @@ class Doctor extends  Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'password' => 'hashed', 
     ];
-
+    public function fcmTokenDevice(){
+        return $this->morphMany(FcmTokenDevice::class,'tokenable');
+    }
     public function getImageUrlAttribute()
     {
         if (!$this->image)

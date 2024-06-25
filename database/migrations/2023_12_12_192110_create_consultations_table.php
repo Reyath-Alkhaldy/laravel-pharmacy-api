@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('text')->nullable();
             $table->string('image')->nullable();
             $table->enum('type',['question','answer'])->default('question');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
         });
     }
