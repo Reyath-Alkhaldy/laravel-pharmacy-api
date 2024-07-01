@@ -15,11 +15,14 @@ class AccessTokensPharmacyController extends Controller
     use GetUser;
     public function store(LoginPharmacyRequest $request)
     {
+
         $pharmacy = Pharmacy::where('email', $request->input('email'))->first();
+        // return $pharmacy->fcmTokenDevice()->where("id", ">",10)->get();
         if ($pharmacy && Hash::check($request->password, $pharmacy->password)) {
             $device_name = $request->post("device_name", $request->userAgent());
             // $doctor->tokens()->delete();
             $token = $pharmacy->createToken($device_name);
+            $this->createFCMTokendevice($pharmacy, $device_name, $request);
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,

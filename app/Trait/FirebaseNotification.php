@@ -9,36 +9,17 @@ use App\Models\User;
 use Google\Client as GoogleClient;
 use Illuminate\Support\Facades\Http;
 
-trait GetUser
+trait FirebaseNotification
 {
-    public function getUser($request, $imput)
+    public function sendNotificaitonsByFCMTokendevice($order)
     {
-        $user_type = $request->post('user_type');
-        if ($user_type == 1) {
-            return User::where($imput, $request->input($imput))->first();
-        } else if ($user_type == 2) {
-            return Doctor::where($imput, $request->input($imput))->first();
-        } else if ($user_type == 3) {
-            return Pharmacy::where($imput, $request->input($imput))->first();
-        }
-        return Admin::where($imput, $request->input($imput))->first();
-    }
+        $user  = $order->user;
+        $pharmacy  = $order->pharmacy;
+        $FCMTokenDevice =  $order->pharmacy->fcmTokenDevice->last()->token;
 
-    public function  createFCMTokendevice($user,$device_name,$request)
-    {
-        return    $user->fcmTokenDevice()->create([
-            "device"=> $device_name,
-            'token' => $request->post('fcm_token_device'),
-           ]);
-
-    }
-    // $CURLOPT_URL = 'https://fcm.googleapis.com/v1/projects/admin-and-pharmacy/messages:send';
-
-    public function sendNotifyByFCMTokendevice($FCMTokenDevice)
-    {
-        $title = "اشعار جديد";
-        $description = "تيست تيست تيست";
-
+        $title = "لديك طلب جديد";
+        $description =  "لديك طلب جديد من {$user->name}";
+        // dd($FCMTokenDevice);
         // $credentialsFilePath = Http::get(asset('json/firebase_fcm.json')); // in server
         $credentialsFilePath = storage_path('app/json/firebase_fcm.json');
         // تحقق من وجود الملف
@@ -47,15 +28,10 @@ trait GetUser
                 'message' => 'Credentials file not found'
             ], 500);
         }
-        // return $credentialsFilePath;
-
-         $jsonData = json_decode(file_get_contents($credentialsFilePath), true);
+        $jsonData = json_decode(file_get_contents($credentialsFilePath), true);
         $client = new GoogleClient();
-        // $client->useApplicationDefaultCredentials();
         $client->setAuthConfig($jsonData);
         $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
-
-        // return $client->refreshTokenWithAssertion(); 
         try {
             $client->fetchAccessTokenWithAssertion();
             $token = $client->getAccessToken();
@@ -65,10 +41,6 @@ trait GetUser
                 'message' => 'Error fetching access token: ' . $e->getMessage()
             ], 500);
         }
-
-
-
-        // $access_token = $token['access_token'];
 
         $headers = [
             "Authorization: Bearer $access_token",
@@ -82,10 +54,10 @@ trait GetUser
                     "title" => $title,
                     "body" => $description,
                 ],
+                // "data" =>[ $order->medicines->first()],
             ]
         ];
         $payload = json_encode($data);
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/v1/projects/admin-and-pharmacy/messages:send');
         curl_setopt($ch, CURLOPT_POST, true);
@@ -110,11 +82,3 @@ trait GetUser
         }
     }
 }
-// 7 - Response : 
-// {
-//     "message": "Notification has been sent",
-//     "response": {
-//         "name": "projects/project_id/messages/0:1716964946123652%49b35ce849b35ce8"
-//     }
-// }
-// notification is send successfully

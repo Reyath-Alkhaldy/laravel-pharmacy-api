@@ -80,12 +80,15 @@ class CheckOutController extends Controller
             $order->save(); #total
             $order->load('pharmacy');
             // ! event OrderCreated with listeners
+            // return   "{".$order->medicines->first()."}";
+
             event(new OrderCreated($order));
             DB::commit();
             return response()->json([
                 'status' => 'success',
                 'message' => 'The order was created',
             ]);
+
         } catch (\Throwable $th) {
             DB::rollBack();
             // throw $th;

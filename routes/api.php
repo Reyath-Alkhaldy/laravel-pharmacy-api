@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\FirbaseController; 
+use App\Http\Controllers\Api\FirbaseController;
+use App\Http\Controllers\Api\Pharmacy\Auth\AccessTokensPharmacyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +14,14 @@ use App\Http\Controllers\Api\FirbaseController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::get("idnex", [FirbaseController::class,'idnex']);
+Route::get("index", [FirbaseController::class,'index']);
 
-// Route::get('firebase', function() {
-//     return 'hi';
-// });
+Route::get('firebase', [FirbaseController::class,'firebase']);
+Route::prefix('/pharmacy')->group(function () {
 
+// Route::post('auth/access-tokens', [AccessTokensPharmacyController::class, 'store'])
+// ->middleware('guest:sanctum')->name('access-tokens');
+});
 // require __DIR__.'./pharmacyApi.php';
 // require __DIR__.'/doctorApi.php';
 // require __DIR__.'/userApi.php';
