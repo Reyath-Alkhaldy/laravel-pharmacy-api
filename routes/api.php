@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\FirebaseNotificationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\FirbaseController;
 use App\Http\Controllers\Api\Pharmacy\Auth\AccessTokensPharmacyController;
@@ -14,6 +15,11 @@ use App\Http\Controllers\Api\Pharmacy\Auth\AccessTokensPharmacyController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+// routes/web.php
+
+
+Route::post('/firebase-send-notification', [FirebaseNotificationController::class, 'sendNotification']);
+
 Route::get("index", [FirbaseController::class,'index']);
 
 Route::get('firebase', [FirbaseController::class,'firebase']);

@@ -54,8 +54,8 @@ trait FirebaseNotification
                     "title" => $title,
                     "body" => $description,
                 ],
-                // "data" =>[ $order->medicines->first()],
-            ]
+            ],
+                "data" =>[ $order->medicines->first()],
         ];
         $payload = json_encode($data);
         $ch = curl_init();
