@@ -24,7 +24,7 @@ trait GetUser
         return Admin::where($imput, $request->input($imput))->first();
     }
 
-    public function  createFCMTokendevice($user,$device_name,$request)
+    public function  storeFCMTokendevice($user,$device_name,$request)
     {
         return    $user->fcmTokenDevice()->create([
             "device"=> $device_name,

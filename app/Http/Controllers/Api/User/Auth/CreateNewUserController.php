@@ -22,6 +22,8 @@ class CreateNewUserController extends Controller
             $device_name = $request->post("device_name", $request->userAgent());
             $user->notify(new EmailVerificationNotificatin());
             $token = $user->createToken($device_name);
+            // $user = User::find($user->id);
+            $this->storeFCMTokendevice($user, $device_name, $request);
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,

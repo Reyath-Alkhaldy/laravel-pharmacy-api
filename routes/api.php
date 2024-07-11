@@ -18,12 +18,12 @@ use App\Http\Controllers\Api\Pharmacy\Auth\AccessTokensPharmacyController;
 // routes/web.php
 
 
-Route::post('/firebase-send-notification', [FirebaseNotificationController::class, 'sendNotification']);
 
 Route::get("index", [FirbaseController::class,'index']);
 
 Route::get('firebase', [FirbaseController::class,'firebase']);
 Route::prefix('/pharmacy')->group(function () {
+    Route::post('/firebase-send-notification', [FirebaseNotificationController::class, 'sendNotification']);
 
 // Route::post('auth/access-tokens', [AccessTokensPharmacyController::class, 'store'])
 // ->middleware('guest:sanctum')->name('access-tokens');

@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Api\Pharmacy\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pharmacy\Auth\LoginPharmacyRequest;
 use App\Models\Pharmacy;
-use App\Trait\GetUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class AccessTokensPharmacyController extends Controller
 {
-    use GetUser;
     public function store(LoginPharmacyRequest $request)
     {
 
@@ -22,7 +20,7 @@ class AccessTokensPharmacyController extends Controller
             $device_name = $request->post("device_name", $request->userAgent());
             // $doctor->tokens()->delete();
             $token = $pharmacy->createToken($device_name);
-            $this->createFCMTokendevice($pharmacy, $device_name, $request);
+            $this->storeFCMTokendevice($pharmacy, $device_name, $request);
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,

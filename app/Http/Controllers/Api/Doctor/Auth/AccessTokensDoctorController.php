@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Api\Doctor\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Doctor\Auth\LoginDoctorRequest;
 use App\Models\Doctor;
-use App\Trait\GetUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class AccessTokensDoctorController extends Controller
 {
-    use GetUser;
     public function store(LoginDoctorRequest $request)
     {
         $doctor = Doctor::where('email', $request->input('email'))->first();
@@ -20,6 +18,7 @@ class AccessTokensDoctorController extends Controller
             $device_name = $request->post("device_name", $request->userAgent());
             // $doctor->tokens()->delete();
             $token = $doctor->createToken($device_name);
+            $this->storeFCMTokendevice($doctor, $device_name, $request);
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,
