@@ -159,6 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
+        App\Providers\GoogleServiceProvider::class,
 
         /*
          * Application Service Providers...

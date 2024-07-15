@@ -24,6 +24,7 @@ class CreateNewDoctorController extends Controller
             $doctor->notify(new EmailVerificationNotificatin());
             $token = $doctor->createToken($device_name);
             $doctor =Doctor::find($doctor->id);
+            $this->storeFCMTokendevice($doctor, $device_name, $request);
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,

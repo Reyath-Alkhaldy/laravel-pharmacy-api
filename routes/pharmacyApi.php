@@ -21,9 +21,7 @@ Route::prefix('/pharmacy')->group(function () {
 
     Route::get('pharmacies', function () {
         return response()->json([
-            'status' => 'success',
-
-            'data' => Pharmacy::Paginate(3),
+            'data' => Pharmacy::all(),
         ]);
     });
 

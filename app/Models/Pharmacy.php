@@ -46,6 +46,10 @@ class Pharmacy extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
+    public function fcmTokenDevice(){
+        return $this->morphMany(FcmTokenDevice::class,'tokenable');
+    }
+
    /**
      * The accessors to append to the model's array form.
      *

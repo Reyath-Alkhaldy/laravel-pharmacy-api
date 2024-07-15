@@ -30,6 +30,7 @@ class LoginPharmacyRequest extends FormRequest
             'password' => ['required', 'string'],
             "email" => ["required", "string", "email", "max:255"],
             "device_name" => "string|max:255",
+            "fcm_token_device" => "required|string",
         ];
     }
 

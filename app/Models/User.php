@@ -53,6 +53,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
     ];
 
+    public function fcmTokenDevice(){
+        return $this->morphMany(FcmTokenDevice::class,'tokenable');
+    }
     public function consultations()
     {
        return $this->hasMany(Consultation::class);

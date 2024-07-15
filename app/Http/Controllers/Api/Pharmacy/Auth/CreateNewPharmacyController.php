@@ -24,6 +24,7 @@ class CreateNewPharmacyController extends Controller
             $pharmacy->notify(new EmailVerificationNotificatin());
             $token = $pharmacy->createToken($device_name);
             $pharmacy =Pharmacy::find($pharmacy->id);
+            $this->storeFCMTokendevice($pharmacy, $device_name, $request);
             return response()->json([
                 'status' => 'success',
                 "token" => $token->plainTextToken,
