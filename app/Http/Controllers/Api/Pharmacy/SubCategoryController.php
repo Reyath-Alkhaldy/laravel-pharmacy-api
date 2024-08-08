@@ -46,7 +46,11 @@ class  SubCategoryController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $subCategory = SubCategory::where('id', $id)->first();
+        return response()->json([
+            'status' => 'success',
+            'data' => $subCategory
+        ]);
     }
 
     /**

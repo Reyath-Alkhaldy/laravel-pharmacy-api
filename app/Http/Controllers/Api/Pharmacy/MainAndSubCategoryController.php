@@ -15,8 +15,8 @@ class MainAndSubCategoryController extends Controller
      */
     public function mainCategories()
     {
-        $categories = MainCategory::get();
-        // $categories = collect($categories)->except('links');
+        $categories = MainCategory::whereHas('subCategories')->paginate();
+        $categories = collect($categories)->except('links');
         return response()->json([
             'status' => 'success',
             'data' => $categories
@@ -27,7 +27,11 @@ class MainAndSubCategoryController extends Controller
      */
     public function subCategories(Request $request)
     {
+        $id =  Auth::guard('sanctum')->id();
         $categories = SubCategory::where('main_category_id', $request->input('main_category_id'))
+        ->withCount(['medicines' => function ($q) use ($id) {
+            $q->where('medicines.pharmacy_id', $id);
+        }])
             ->get();
         // $categories = collect($categories)->except('links');
         return response()->json([

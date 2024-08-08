@@ -37,7 +37,7 @@ class MostSellingMedicinesController extends Controller
         // ]);
 
         $pharmacyId =  Auth::guard('sanctum')->id();
-        $pharmacyId = 1;
+        // $pharmacyId = 1;
 
         $mostSellingMedicines =  OrderMedicine::with('medicine')
             ->join('medicines', 'order_medicines.medicine_id', 'medicines.id')
@@ -50,7 +50,7 @@ class MostSellingMedicinesController extends Controller
             // ->dd();
             ->get();
 
-            $ordersDetails = Order::where('pharmacy_id',$pharmacyId)->selectRaw('sum(total) as sum_total,count(id) as order_count')->get();
+            $ordersDetails = Order::where('pharmacy_id',$pharmacyId)->selectRaw('sum(total) as sum_total,count(id) as order_count')->first();
             $medicinesCount = Medicine::where('pharmacy_id',$pharmacyId)->count();
         return response()->json([
             'status' => 'success',

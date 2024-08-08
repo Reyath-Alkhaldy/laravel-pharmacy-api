@@ -15,19 +15,20 @@ class MainCategoryController extends Controller
     public function index(Request $request)
     {
         $id =  Auth::guard('sanctum')->id();
-        if (isset($id)) {
-            $categories = MainCategory::whereHas('medicines', function ($q) use ($id) {
-                $q->where('pharmacy_id', $id);
-            })
-                // ->with(['subCategories' => function ($q) use ($id) {
-                //     $q->whereHas('medicines', function ($q) use ($id) {
-                //         $q->where('pharmacy_id', $id);
-                //     });
-                // }])
-                ->paginate();
-        } else {
-            $categories = MainCategory::with('medicines')->get();
-        }
+        // if (isset($id)) {
+        $categories = MainCategory::whereHas('medicines', function ($q) use ($id) {
+            $q->where('pharmacy_id', $id);
+        })
+            // ->with(['subCategories' => function ($q) use ($id) {
+            //     $q->whereHas('medicines', function ($q) use ($id) {
+            //         $q->where('pharmacy_id', $id);
+            //     });
+            // }])
+            ->paginate();
+        // } 
+        // else {
+        //     $categories = MainCategory::with('medicines')->get();
+        // }
         $categories = collect($categories)->except('links');
         return response()->json([
             'status' => 'success',
